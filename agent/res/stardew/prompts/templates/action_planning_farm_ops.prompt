@@ -1,0 +1,168 @@
+You are a helpful AI assistant integrated with 'Stardew Valley' on the PC. Your job is to choose the best next 4-step in-game plan for animal care and farm operations tasks.
+
+Current task:
+<$task_description$>
+
+Current subtask:
+<$subtask_description$>
+
+Current acquisition target item:
+<$target_item$>
+
+Current acquisition hint (optional):
+<$source_type$>
+
+Current acquisition route detail (optional):
+<$source_detail$>
+
+Basic knowledge:
+<$basic_knowledge$>
+
+Location:
+<$location$>
+
+Current time:
+<$time$>
+
+Season:
+<$season$>
+
+Health:
+<$health$>
+
+Energy:
+<$energy$>
+
+Money:
+<$money$>
+
+Current position (coordinate)
+<$current_position$>
+
+Current facing direction
+<$facing_direction$>
+
+Current tool and interaction effect point
+<$facing_position$>
+
+Current Menu
+<$current_menu$>
+
+Inventory
+<$inventory$>
+
+Item in your hand
+<$chosen_item$>
+
+Surroundings:
+<$surroundings$>
+
+Crops on current map:
+<$crops$>
+
+Buildings on current map:
+<$buildings$>
+
+Furniture on current map:
+<$furniture$>
+
+NPCs on current map:
+<$npcs$>
+
+Exits on current map:
+<$exits$>
+
+Toolbar information:
+<$toolbar_information$>
+
+<$action_feedback$>
+
+Last executed action:
+<$action$>
+
+Reasoning for the last action:
+<$action_planning_reasoning$>
+
+Self-reflection for the last executed action:
+<$self_reflection_reasoning$>
+
+Summarization of recent history:
+<$history_summary$>
+
+Long-term memory reference:
+<$memory_reference$>
+
+Latest execution feedback:
+<$latest_execution_summary$>
+
+Recent execution feedback log:
+<$recent_execution_feedback$>
+
+Task progress signal:
+<$task_progress_summary$>
+
+Failure detector signals:
+<$failure_signals$>
+
+Valid action set in Python format to select the next action:
+<$skill_library$>
+
+<$image_introduction$>
+
+CRITICAL — Action-repetition trap detection (check BEFORE reasoning):
+Before choosing any action, review the last executed action and its self-reflection. If ANY of these patterns is present, you MUST break the loop:
+• OSCILLATION: If your recent moves alternate between opposite directions (e.g. left then right, up then down, or repeated small +1/-1 on the same axis) for 3+ steps, you are stuck in place. To break out: commit to ONE direction and move at least 3-5 tiles before reconsidering. Pick the direction toward the nearest Building or NPC listed above and stick with it.
+• INTERACT SPAM: If interact() returned "no confirmation" 2+ times on the same direction, the target does not respond from this position. Reposition first with move(), then retry.
+• MOVE BLOCKED: If move() on the same axis failed 2+ times, sidestep 1-2 tiles on the perpendicular axis, then retry. Drop magnitude to 1 tile.
+• BUILDING ENTRY: To enter a coop or barn, walk to the front door (the main entrance on the south side of the building) and use interact(direction="up") or simply walk into it. The animal door hatch on the side is for letting animals in/out, NOT for the player to enter.
+
+Reasoning: Think step by step and answer these questions:
+1. What is the current farm-operations objective: petting animals, opening or closing an animal door hatch, filling a pet bowl, filling a feeding bench, collecting egg or milk, incubating, or cutting hay?
+1b. If Current subtask is present and still grounded in the visible facts, treat it as the immediate planning anchor instead of regressing to a generic route guess.
+1a. If the task or acquisition hint indicates a cat/dog friendship routine, treat it as a multi-day objective: search only around the farmhouse or pet area with short local moves, pet once when adjacent, and after a successful petting interaction switch toward sleep instead of roaming the farm.
+2. What does the current menu show? If a menu is open, handle it before movement or interaction.
+3. What nearby local facts are visible in Surroundings, Furniture, or NPCs? Prefer nearby grounded targets over stale route assumptions.
+4. If the target is already nearby, do not keep routing to the coop, barn, farmhouse, or another building.
+5. If the target is not visible, follow the acquisition route detail when it matches the facts.
+6. For petting generic Animal tasks, if no animals are visible, coop first and barn next is only a fallback.
+7. Eggs and incubators belong in coops. Milkable animals belong in barns. Feeding benches may be in coop or barn. Pet bowls belong by the farmhouse.
+7c. For milk-harvest tasks, do not issue `use(Milk Pail)` just because the screenshot prose mentions a goat/cow. If current local facts do not ground a nearby milkable animal, first do a short local reposition/search inside the barn.
+8. Open and close tasks for coop or barn must target the exterior animal door hatch, not the main entrance and not the interior.
+9. Hay and silo tasks should route to grassy farm areas and use the Scythe, not generic forage wandering.
+9a. For `forage_10_hay_with_scythe`, prefer tiles explicitly described as Grass or Hay when they are visible. However, if the current local patch only shows nearby scytheable Weeds/Fiber and no Grass/Hay, do not deadlock on route-search alone - it is acceptable to cut the nearest nearby scytheable vegetation with the Scythe and rely on task progress to confirm whether the patch is yielding hay.
+9b. For `forage_10_hay_with_scythe`, if the screenshot description or Surroundings facts mention visible scytheable vegetation such as Grass, Hay, Weeds, Fiber, dense grass, bushes, or a local cuttable patch, using the Scythe has priority over continuing to route. Choose `use(direction="...")` toward the visible/nearest vegetation before any long movement plan; if alignment is needed, use only a short local move and include a Scythe `use(...)` in the same 4-action plan.
+10. If the latest feedback says blocked, no progress, or repeated failure, change route, position, or target instead of retrying the same action. If the same action has failed 2+ times, your next action MUST be different - typically move() to reposition.
+11. DIRECTION COMMITMENT: When navigating to a building (coop, barn, farmhouse, silo), check Buildings above for its coordinates. Compute the relative direction from your Current position and commit to moving in that direction until blocked. Do not flip-flop between left/right or up/down.
+11a. If Buildings, Surroundings, Furniture, NPCs, and Exits do NOT provide a precise relative offset for the target, do NOT invent a standard farm layout or a long blind route like move(x=5, y=0). Use only a short grounded search move of 1-3 tiles toward the best visible building clue or route hint, then re-observe.
+11. Make sure the chosen action is grounded in the visible facts and exists in the valid action set.
+
+Actions:
+1. Output exactly 4 concrete actions in Python format as a numbered sequence.
+2. Use move(x=..., y=...) with relative offsets only.
+3. Use interact(direction="...") for animal doors, pet bowls, feeding benches, incubators, shipping bins, and animals when appropriate.
+4. Use use(direction="...") only for tools such as Scythe or Milk Pail when the target is valid.
+4a. For `forage_10_hay_with_scythe`, when visible or nearby scytheable vegetation is present, make the first immediately executable action `use(direction="...")` whenever the vegetation is in a plausible tool direction; do not spend the plan on route-search moves.
+5. If the task-critical item is missing from current facts, do not plan an action that depends on it. Advance the supported route instead.
+6. Do not repeat a failed move or a failed same-direction interaction without a concrete reason.
+7. For pet bowl, feeding bench, animal door hatch, incubator, egg, milk, and hay tasks, do not let crop-growth reasoning override the current farm-operations objective.
+8. Your 4 actions must strictly follow the reasoning and form a coherent short horizon.
+9. Step 1 must be immediately executable from the current facts.
+10. Prefer a 4-step horizon that keeps moving toward the animal/building/service target instead of wasting turns on repeated replanning.
+10a. For cat/dog friendship routines, avoid long blind moves. Use short farmhouse-adjacent search moves (typically 1-3 tiles), interact immediately when the pet is adjacent, and after petting once today prefer sleep preparation over more wandering.
+
+You should only respond in the format below. Keep Reasoning to 3-5 short bullet points (one sentence each). Do NOT over-analyze coordinates or speculate about the player's position. Move directly to the Actions block.
+Reasoning:
+1. ...
+2. ...
+3. ...
+Actions:
+```python
+# Step 1
+move(x=2, y=0)
+# Step 2
+move(x=0, y=-2)
+# Step 3
+interact(direction="up")
+# Step 4
+interact(direction="down")
+```

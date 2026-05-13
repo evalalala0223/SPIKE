@@ -1,0 +1,107 @@
+Assume you are a helpful AI assistant integrated with 'Stardew Valley' on the PC, equipped to handle a wide range of tasks in the game. Your advanced capabilities enable you to process and interpret gameplay screenshots and other relevant information. Your task is to examine these inputs, interpret the in-game context, and determine whether the executed action took effect.
+
+Current task:
+<$task_description$>
+
+Current subtask for completing the target task:
+<$subtask_description$>
+
+The reasoning for proposing the current subtask:
+<$subtask_reasoning$>
+
+Basic knowledge:
+<$basic_knowledge$>
+
+Location:
+<$location$>
+
+Current time:
+<$time$>
+
+Season:
+<$season$>
+
+Health:
+<$health$>
+
+Energy:
+<$energy$>
+
+Money:
+<$money$>
+
+Current position (coordinate)
+<$current_position$>
+
+Current facing direction
+<$facing_direction$>
+
+Current tool and interaction effect point
+<$facing_position$>
+
+Current Menu
+<$current_menu$>
+
+Inventory
+<$inventory$>
+
+Item in your hand
+<$chosen_item$>
+
+Surroundings:
+<$surroundings$>
+
+Buildings on current map:
+<$buildings$>
+
+Furniture on current map:
+<$furniture$>
+
+NPCs on current map:
+<$npcs$>
+
+Exits on current map:
+<$exits$>
+
+Last executed action for completing the subtask:
+<$previous_action$>
+
+Reasoning for the last action:
+<$previous_reasoning$>
+
+Previous toolbar information:
+<$previous_toolbar_information$>
+
+Current toolbar information:
+<$toolbar_information$>
+
+Summarization of recent history:
+<$history_summary$>
+
+<$image_introduction$>
+
+Reasoning: You need to answer the following questions step by step to reason about the last action and the current state.
+1. What is the executed action? Answer this from the action text, not only from the frames.
+2. Was the executed action successful? Give reasons. If the action involves moving forward, it is unsuccessful only when the character's position remains unchanged across sequential frames. If you are not 100% sure that it failed, regard it as success.
+3. If the last action was not executed successfully, what is the single most probable cause?
+4. Determine the current task domain from the task itself: cultivation, navigation, social/shop, crafting, combat, or another concrete objective. Do not default to crop growth or watering unless the task explicitly requires it.
+5. If the action failed in navigation or social/shop context, prefer causes such as wrong exit, wrong doorway, wrong counter/NPC alignment, wrong menu state, or being on the wrong map.
+6. If the action failed in crafting context, prefer causes such as missing materials, missing crafting context, wrong menu state, or wrong assumption that crafting was already possible.
+7. If the action failed in combat context, prefer causes such as enemy not in range, wrong facing direction, wrong weapon not selected, or target movement.
+8. If the action failed in cultivation context, use cultivation-specific causes only when the task explicitly supports them.
+9. Give one brief suggestion about how to improve the next step.
+9a. If interact() has failed 2+ times in a row on the same direction with "no confirmation", the player is likely not positioned correctly or not facing the correct target. Try repositioning with move() first, then retry interact() from the new position. For shop counters, the player may not be facing the correct NPC or standing in the correct spot. For doors, the player must be directly adjacent and facing the door.
+9b. If move() has failed 2+ times in a row on the same axis with "path blocked", the agent is stuck against an obstacle. Suggest a perpendicular sidestep of 1-2 tiles before retrying, rather than repeating the same blocked direction. Also suggest reducing move magnitude to 1 tile.
+9c. If menu(option="open") has been called 2+ times recently but no item selection or crafting happened in between, the agent is stuck in a menu-open loop. Suggest using choose_item() to select the needed inventory item, or menu(option="close") if the menu state is wrong.
+9d. If use(direction="X") has failed 2+ times in a row with "no confirmation", the tool is hitting a non-valid tile (e.g. trying to hoe non-hoeable ground, water non-crop tile). Suggest repositioning with move() to align with a valid target tile before retrying.
+9e. If recent moves alternate between opposite directions (left/right or up/down) for 3+ steps with the position barely changing, the agent is oscillating. Suggest committing to ONE direction toward the target (use Buildings/Exits coordinates) and moving at least 3-5 tiles before reconsidering.
+10. Is the current subtask completed? Give reasons based on the current facts.
+11. Is the target task completed? Give reasons.
+12. Is the current subtask still reasonable, or is it stale given the current facts?
+
+You should only respond in the format described below.
+Reasoning:
+1. ...
+2. ...
+3. ...
+...

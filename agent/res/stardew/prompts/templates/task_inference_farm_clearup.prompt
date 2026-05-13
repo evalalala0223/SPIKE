@@ -1,0 +1,100 @@
+Assume you are a helpful AI assistant integrated with 'Stardew Valley' on the PC. You will summarize recent debris-clearing progress and propose the best short subtask.
+
+Current task:
+<$task_description$>
+
+Previous proposed subtask for the task:
+<$subtask_description$>
+
+Previous reasoning for proposing the subtask:
+<$subtask_reasoning$>
+
+<$image_introduction$>
+
+Current toolbar information:
+<$toolbar_information$>
+
+Current toolbar fact:
+<$current_toolbar_fact$>
+
+Current image description:
+<$image_description$>
+
+Current surroundings fact:
+<$surroundings$>
+
+Nearest grounded target summary:
+<$nearest_grounded_target_summary$>
+
+Location:
+<$location$>
+
+Current position (coordinate):
+<$current_position$>
+
+Current facing direction:
+<$facing_direction$>
+
+Current tool and interaction effect point:
+<$facing_position$>
+
+Current Menu:
+<$current_menu$>
+
+Buildings on current map:
+<$buildings$>
+
+Furniture on current map:
+<$furniture$>
+
+NPCs on current map:
+<$npcs$>
+
+Exits on current map:
+<$exits$>
+
+Last executed action:
+<$previous_action$>
+
+Decision-making reasoning for the last executed action:
+<$previous_reasoning$>
+
+Self-reflection for the last executed action:
+<$self_reflection_reasoning$>
+
+The following is the summary of history that happened before the last screenshot:
+<$previous_summarization$>
+
+Important:
+1. Trust current surroundings and tool facts over stale route or obstacle assumptions.
+1a. If Current surroundings fact and Nearest grounded target summary do not show matching debris, do not claim weeds, stone, twig, or hay are currently visible based only on the image description.
+2. Keep the subtask aligned with clearing weeds, stones, twigs, or mixed debris only.
+3. Do not invent crop growth, watering, harvest, or shopping logic unless the task explicitly requires it.
+4. Do not use a rigid farmhouse-only clearing template. Ground the subtask in currently visible debris or the nearest uncleared area.
+5. If Buildings on current map or Exits on current map are present, use them only as route context for reaching uncleared open ground; do not let them override the actual debris target.
+6. If Current Menu is open, resolve that local menu state before proposing more route movement.
+7. If Nearest grounded target summary names a matching debris target, the subtask should align with reaching that target instead of a generic farmhouse-front route.
+
+History_summary:
+1. Summarize the target debris type, required tool, and confirmed progress.
+2. Record successful clearing actions day by day when relevant.
+3. If the history does not confirm that debris was cleared, do not count it as progress.
+
+Subtask_reasoning:
+1. Explain how to complete the clearing task.
+2. Explain the current progress without assuming missing facts.
+3. Decide whether the previous subtask is complete, stale, or still valid.
+4. If the correct tool is not selected, switching tools is allowed.
+5. If the character is not close enough to visible debris, a movement subtask is allowed.
+6. The proposed subtask must be one precise sentence and must not mention skills or grid coordinates.
+7. If no matching debris is currently visible, prefer the nearest grounded uncleared area or a short move away from the porch/building edge instead of a blind long route.
+
+You should only respond in the format below.
+History_summary:
+The summary is...
+Subtask_reasoning:
+1. ...
+2. ...
+3. ...
+Subtask:
+The current subtask is

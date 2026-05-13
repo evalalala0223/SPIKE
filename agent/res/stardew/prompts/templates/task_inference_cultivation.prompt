@@ -1,0 +1,138 @@
+Assume you are a helpful AI assistant integrated with 'Stardew Valley' on the PC. You will summarize recent crop progress and propose the most suitable short cultivation subtask.
+
+Current task:
+<$task_description$>
+
+Previous proposed subtask for the task:
+<$subtask_description$>
+
+Previous reasoning for proposing the subtask:
+<$subtask_reasoning$>
+
+<$image_introduction$>
+
+Current toolbar information:
+<$toolbar_information$>
+
+Current toolbar fact:
+<$current_toolbar_fact$>
+
+Current image description:
+<$image_description$>
+
+Current surroundings fact:
+<$surroundings$>
+
+Location:
+<$location$>
+
+Current position (coordinate):
+<$current_position$>
+
+Current facing direction:
+<$facing_direction$>
+
+Current tool and interaction effect point:
+<$facing_position$>
+
+Current Menu:
+<$current_menu$>
+
+Buildings on current map:
+<$buildings$>
+
+Furniture on current map:
+<$furniture$>
+
+NPCs on current map:
+<$npcs$>
+
+Exits on current map:
+<$exits$>
+
+Current acquisition target item:
+<$target_item$>
+
+Current acquisition hint (optional):
+<$source_type$>
+
+Current acquisition route detail (optional):
+<$source_detail$>
+
+Last executed action:
+<$previous_action$>
+
+Decision-making reasoning for the last executed action:
+<$previous_reasoning$>
+
+Self-reflection for the last executed action:
+<$self_reflection_reasoning$>
+
+Failure root cause from runtime:
+<$failure_root_cause$>
+
+Failure signature from runtime:
+<$failure_signature$>
+
+Required change type from runtime:
+<$required_change_type$>
+
+Current action feedback:
+<$action_feedback$>
+
+Deadlock signature:
+<$deadlock_signature$>
+
+Deadlock reflection cycles:
+<$deadlock_reflection_cycles$>
+
+The following is the summary of history that happened before the last screenshot:
+<$previous_summarization$>
+
+Important:
+1. Trust current toolbar and cultivation facts over stale history.
+2. Verify whether the required seeds, fertilizer, or tool is really present before proposing a step that depends on it.
+3. If a task-critical item is missing, make the next subtask a concrete retrieval or source-check step.
+4. If Buildings on current map or Exits on current map are present, use them as route facts when the task requires leaving the current patch, opening the chest, visiting Pierre, or returning home to sleep.
+5. For sowing and fertilizing, only treat explicit HoeDirt / tilled soil as a valid target. A tile described only as empty is invalid.
+6. For sowing, the target must be explicit empty HoeDirt. For fertilizer placement, the target may be empty or already occupied, but it must not already be explicitly fertilized with fertilizer, Speed-Gro, Retaining Soil, or similar.
+7. For cultivation and harvest tasks, follow the crop lifecycle: till, optional fertilizer, sow, water once today, wait for later days, then harvest when ready.
+8. If the crop is already watered today and is not mature, do not propose watering again.
+9. Do not force unrelated non-crop reasoning onto cultivation tasks.
+10. For `cultivate_and_harvest_*` tasks, once the seed is planted and watered for TODAY but is not yet mature, the next subtask should normally switch to sleep preparation: return home, get to bed, and advance to the next day instead of wandering around the farm.
+11. Do not keep the agent hovering near the same crop after today's required watering is done. Only stay local if the crop still needs tilling, sowing, fertilizing, or watering right now.
+12. If Current Menu already shows a relevant container, dialogue, or crafting/inventory state, prefer a local menu or chest interaction subtask over another travel subtask.
+13. For outdoor cultivation on the Farm, Farmhouse Door / Farmhouse Entrance is not the next crop target. If it is adjacent while the current objective is tilling, sowing, fertilizing, or watering outside, the next subtask should move away from the house footprint or toward an open patch instead of entering the door. Only propose farmhouse entry for sleep / return-home flows or when the character is already inside and needs to exit.
+14. For harvest tasks, if a ready-to-harvest crop is already adjacent or clearly visible in the current local patch, keep the subtask local and grounded on that crop. Do not propose turning in place, generic searching, or switching to Hoe/Axe for harvest.
+15. For tilling, trust Current surroundings fact and Nearest grounded target summary over image prose. If HoeDirt is already visible nearby, count it as existing progress rather than saying progress is zero.
+
+History_summary:
+1. Summarize the cultivation task and confirmed progress.
+2. Record successful actions day by day when relevant.
+3. If watering happened on prior days, keep the count accurate.
+4. For `cultivate_and_harvest_*`, state clearly whether today's watering is already done and whether the crop is mature yet.
+
+Subtask_reasoning:
+1. Explain how to complete the target crop task.
+2. Explain the current progress without assuming missing facts.
+3. Check whether the required seed, fertilizer, or tool is currently available.
+4. Check whether the intended nearby target is explicit HoeDirt, whether sowing requires it to be empty, and whether fertilizing would be blocked because it is already explicitly fertilized.
+5. If the item is missing, explain the evidence and propose a concrete retrieval route.
+6. If fertilizing is needed and the visible HoeDirt is already explicitly fertilized, the subtask must say to switch to another unfertilized HoeDirt tile instead of retrying the same tile.
+7. Decide whether the previous subtask is complete, stale, or still valid.
+8. The proposed subtask must be one precise sentence and must not mention skills or grid coordinates.
+9. If `failure_root_cause`, `failure_signature`, or `required_change_type` show the last attempt failed for the same local reason, the new subtask must explicitly change that dimension instead of repeating the same local intent.
+10. For `cultivate_and_harvest_*`, if the crop is planted, watered today, and still not mature, the proposed subtask should explicitly pivot to going home and sleeping. Do not keep suggesting more watering, crop-side movement, or generic searching.
+11. For tilling, visible HoeDirt / tilled soil means that tile is already done. Do not describe visible HoeDirt as a fresh till target; prefer explicit untilled ground or a safe open patch.
+12. For harvest, if a ready crop is already adjacent, the subtask should explicitly say to harvest that nearby crop now instead of moving onto its tile or changing tools.
+13. For tilling, do not propose vague orientation-only subtasks like "turn left" or "turn right". The subtask should either say to till an already-grounded adjacent patch now or move toward the nearest grounded untilled patch.
+
+You should only respond in the format below.
+History_summary:
+The summary is...
+Subtask_reasoning:
+1. ...
+2. ...
+3. ...
+Subtask:
+The current subtask is

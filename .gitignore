@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments and local secrets
+.env
+env/.env
+.venv/
+venv/
+env.bak/
+venv.bak/
+
+# IDE and OS files
+.vscode/
+.idea/
+.vs/
+.DS_Store
+
+# Build outputs
+build/
+dist/
+*.egg
+StardojoMod/bin/
+StardojoMod/obj/
+*.csproj.user
+
+# Runtime outputs
+runs/
+agent/runs/
+cache/
+agent/cache/
+env/cache/
+tmp/
+tmp*/
+.tmp_*/
+agent/screen_shot_buffer*/
+env/screen_shot_buffer/
+screenshots/
+*.log
+*.mp4
+*.bak
+*.bak_*
+
+# Game save snapshots are not part of the minimal source release.
+env/tasks/saves/save_*/
+
+# Generated documentation site.
+docs/docs/
+docs/site/

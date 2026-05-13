@@ -1,0 +1,15 @@
+{
+  "use_langchain": false,
+  "key_var": "OPENAI_API_KEY",
+  "emb_key_var": "OPENAI_API_KEY",
+  "emb_model": "text-embedding-3-small",
+  "comp_model": "gpt-4o",
+  "is_azure": false,
+  "base_url": "https://api.openai.com/v1",
+  "emb_base_url": "https://api.openai.com/v1",
+  "api_key": "",
+  "emb_api_key": "",
+  "secondary_api_key": "",
+  "emb_fallback_dim": 1536,
+  "image_emb_fallback_dim": 1024
+}

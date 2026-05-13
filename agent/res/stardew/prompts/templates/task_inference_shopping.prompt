@@ -1,0 +1,108 @@
+Assume you are a helpful AI assistant integrated with 'Stardew Valley' on the PC. You will summarize recent commerce and service progress and propose the best short subtask.
+
+Current task:
+<$task_description$>
+
+Target item or service:
+<$target_item$>
+
+Source type hint:
+<$source_type$>
+
+Source detail:
+<$source_detail$>
+
+Previous proposed subtask for the task:
+<$subtask_description$>
+
+Previous reasoning for proposing the subtask:
+<$subtask_reasoning$>
+
+<$image_introduction$>
+
+Current image description:
+<$image_description$>
+
+Current toolbar information:
+<$toolbar_information$>
+
+Current toolbar fact:
+<$current_toolbar_fact$>
+
+Current surroundings fact:
+<$surroundings$>
+
+Location:
+<$location$>
+
+Current position (coordinate):
+<$current_position$>
+
+Current facing direction:
+<$facing_direction$>
+
+Current tool and interaction effect point:
+<$facing_position$>
+
+Current Menu:
+<$current_menu$>
+
+Buildings on current map:
+<$buildings$>
+
+Furniture on current map:
+<$furniture$>
+
+NPCs on current map:
+<$npcs$>
+
+Exits on current map:
+<$exits$>
+
+Last executed action:
+<$previous_action$>
+
+Decision-making reasoning for the last executed action:
+<$previous_reasoning$>
+
+Self-reflection for the last executed action:
+<$self_reflection_reasoning$>
+
+The following is the summary of history that happened before the last screenshot:
+<$previous_summarization$>
+
+Important:
+1. Trust current facts over stale route assumptions.
+2. Treat shops, counters, service menus, blacksmith, carpenter, Marnie, Joja, backpack counter, and shipping bin as valid commerce contexts.
+3. Use the target item and source hints to decide whether inventory, a seller, a service counter, or the shipping bin is the real source context.
+4. If Buildings on current map or Exits on current map are present, use them as the primary route facts for shops and service buildings instead of inventing a generic town layout.
+5. If the character is already at the correct counter, menu, or selling point, do not keep an old travel subtask.
+6. If Current Menu already shows a relevant shop, service, or dialogue state, switch the subtask to the immediate local menu interaction.
+6a. For sell_* tasks, if the target item is visible in the current toolbar/inventory and the player is already at the correct shop counter or menu, the new subtask must stay in the local sell flow. Do not generate a new travel subtask, do not tell the player to move into the counter tile, and do not reopen the shop unless the menu is clearly closed.
+6b. For purchase_* tasks, if the correct shop menu is already open, the new subtask should stay in the local purchase flow instead of reopening the counter.
+7. If the task is a shipping bin sale, the subtask should focus on the shipping bin rather than a store counter.
+8. Do not invent crop growth or animal care logic unless the task explicitly requires it.
+
+History_summary:
+1. Summarize the item, building service, or sale target and the confirmed progress.
+2. Record successful actions day by day when relevant.
+3. State whether the character already reached the correct counter, menu, or shipping bin context.
+
+Subtask_reasoning:
+1. Explain how to finish the commerce or service task.
+2. Explain the current progress without assuming missing facts.
+3. Decide whether the previous subtask is complete, stale, or still valid.
+4. If the current facts already support the service interaction, replace stale route subtasks with a local counter, menu, or shipping bin subtask.
+4a. For sell_* tasks, if the shop menu is already open and the target item is locally visible, the proposed subtask should explicitly sell through the current menu or select the target item for sale. Do not describe walking into the counter, reopening the menu, or closing the menu before the sale attempt.
+5. If Buildings or Exits provide a relative offset, name the direction implied by those facts instead of inventing a generic route.
+6. The proposed subtask must be one precise sentence and must not mention skills or grid coordinates.
+
+You should only respond in the format below.
+History_summary:
+The summary is...
+Subtask_reasoning:
+1. ...
+2. ...
+3. ...
+Subtask:
+The current subtask is

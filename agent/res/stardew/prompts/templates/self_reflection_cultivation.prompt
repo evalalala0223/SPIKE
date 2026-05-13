@@ -1,0 +1,133 @@
+Assume you are a helpful AI assistant integrated with 'Stardew Valley' on the PC, equipped to handle a wide range of tasks in the game. Your advanced capabilities enable you to process and interpret gameplay screenshots and other relevant information. Your task is to examine these inputs, interpret the in-game context, and determine whether the executed action takes effect.
+
+Current task:
+<$task_description$>
+
+Basic knowledge:
+<$basic_knowledge$>
+
+Location:
+<$location$>
+
+Current time:
+<$time$>
+
+Season:
+<$season$>
+
+Health:
+<$health$>
+
+Energy:
+<$energy$>
+
+Money:
+<$money$>
+
+Current position (coordinate)
+<$current_position$>
+
+Current facing direction
+<$facing_direction$>
+
+Current tool and interaction effect point
+<$facing_position$>
+
+Current Menu
+<$current_menu$>
+
+Inventory
+<$inventory$>
+
+Item in your hand
+<$chosen_item$>
+
+Surroundings:
+<$surroundings$>
+
+Crops on current map:
+<$crops$>
+
+Doors on current map:
+<$doors$>
+
+Furniture on current map:
+<$furniture$>
+
+NPCs on current map:
+<$npcs$>
+
+Exits on current map:
+<$exits$>
+
+
+Last executed action for completing the subtask:
+<$previous_action$>
+
+Reasoning for the last action:
+<$previous_reasoning$>
+
+Previous toolbar information:
+<$previous_toolbar_information$>
+
+Current toolbar information:
+<$toolbar_information$>
+
+Summarization of recent history:
+<$history_summary$>
+
+Action feedback:
+<$action_feedback$>
+
+Front tile summary:
+<$front_tile_summary$>
+
+Blocked recovery hint:
+<$blocked_recovery_hint$>
+
+Current blocker signature:
+<$current_blocker_signature$>
+
+Nearest grounded target summary:
+<$nearest_grounded_target_summary$>
+
+Known failure root cause from runtime:
+<$failure_root_cause$>
+
+Known failure signature from runtime:
+<$failure_signature$>
+
+Required change type from runtime:
+<$required_change_type$>
+
+<$image_introduction$>
+
+Reasoning: You need to answer the following questions step by step to get some reasoning based on the last action and sequential frames of the character during the execution of the last action.
+1. What is the executed action? Please answer this question not based on the sequential frames.
+2. Was the executed action successful? Give reasons. You should refer to the following rules:
+- If the action involves moving forward, it is considered unsuccessful only when the character's position remains unchanged across sequential frames, regardless of background elements and other people.
+- If you are not 100% sure that the action fails, regard it as success. 
+3. If the last action is not executed successfully, what is the most probable cause? You should give only one cause and refer to the following rules:
+- The reasoning for the last action could be wrong.
+- If it is an interaction action that places seeds or fertilizer, the most probable cause was usually wrong tile alignment, wrong facing direction, or targeting a tile that cannot accept the item yet. Seeds only work on explicit empty HoeDirt / tilled soil. Fertilizer must target explicit unfertilized HoeDirt / tilled soil; it may be empty or may already contain a planted seed or crop, but it must not already be described as fertilized, Speed-Gro, Retaining Soil, or similar. Prefer a small local reposition near the current patch before abandoning the area.
+- If it is another interaction action, the most probable cause was that the action was unavailable at the current place, then you should move to a new place.
+- If it is a movement action, the most probable cause was that you were blocked by seen or unseen obstacles.
+- If there is an error report, analyze the cause based on the report.
+4. Give your suggestion about how to improve.
+5. Is the target task completed? Give your reasons.
+6. Based on provided information, what is your next sub task? 
+7. Do you think the subtask is reasonable? Give your reasons.
+8. Output exactly one normalized `failure_root_cause` from this list when the action failed: `invalid_target_tile`, `wrong_facing_direction`, `wrong_tile_alignment`, `item_missing`, `menu_stuck`, `movement_blocked`, `stale_subtask`, `unknown`.
+9. Output exactly one normalized `required_change_type` from this list when the action failed: `change_position`, `change_facing`, `change_target_tile`, `change_selected_item`, `close_menu`, `switch_to_retrieval_subtask`, `rebuild_subtask`.
+10. If the last action failed and the runtime already provided a failure root cause or required change type, do not contradict it unless the current facts clearly prove it wrong.
+
+You should only respond in the format described below.
+Failure_root_cause:
+invalid_target_tile
+Required_change_type:
+change_target_tile
+Reasoning:
+1. ...
+2. ...
+3. ...
+...
