@@ -85,10 +85,6 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 
 **SPIKE framework.** SPIKE uses event-triggered switching to reserve strategic deliberation for discontinuities while reactive execution handles stable local progress.
 
-<img src="assets/workflow.png" width="760">
-
-**Strategic Controller workflow.** When escalation is triggered, the Strategic Controller gathers state evidence, retrieves memory, reasons over subtasks, and proposes the next actions.
-
 <a name="installation"></a>
 
 # Installation
