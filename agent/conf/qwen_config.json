@@ -1,15 +1,8 @@
 {
-  "use_langchain": false,
-  "key_var": "DASHSCOPE_API_KEY",
-  "emb_key_var": "DASHSCOPE_API_KEY",
-  "emb_model": "text-embedding-v3",
+  "key_var": "OA_OPENAI_KEY",
+  "emb_model": "BAAI/bge-base-en-v1.5",
   "comp_model": "qwen2.5-vl-72b-instruct",
   "is_azure": false,
-  "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-  "emb_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-  "api_key": "",
-  "emb_api_key": "",
-  "secondary_api_key": "",
-  "emb_fallback_dim": 1024,
-  "image_emb_fallback_dim": 1024
+  "base_url": "",
+  "emb_fallback_dim": 768
 }

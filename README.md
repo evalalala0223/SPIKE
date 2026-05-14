@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="">
-    <img width="36" alt="SPIKE" src="assets/logo.png" style="vertical-align: middle;"> <strong><span style="font-size: 24px; vertical-align: middle;">SPIKE</span></strong>
+  <a href="https://rinke02.github.io/wencanjiang.github.io/projects/SPIKE/">
+    <span style="display: inline-block; width: 44px; text-align: left;"><img width="36" alt="SPIKE" src="assets/logo.png" style="vertical-align: middle;"></span><strong><span style="font-size: 24px; vertical-align: middle;">SPIKE</span></strong><span style="display: inline-block; width: 44px;"></span>
   </a>
 </p>
 
@@ -10,21 +10,21 @@
 
 <p align="center">
   <a href="https://openreview.net/profile?id=~Wencan_Jiang1"><strong>Wencan Jiang <sup>1</sup></strong></a>
-  ·
+  &middot;
   <a href="https://zhangzjn.github.io/"><strong>Jiangning Zhang <sup>1</sup></strong></a>
-  ·
+  &middot;
   <a href="https://jianbiaomei.github.io/"><strong>Jianbiao Mei <sup>1</sup></strong></a>
-  ·
+  &middot;
   <a href="https://github.com/Eddie0521"><strong>Jinzhuo Liu <sup>1</sup></strong></a>
-  ·
+  &middot;
   <a href="https://yuyang-cloud.github.io/"><strong>Yu Yang <sup>1</sup></strong></a>
   <br>
   <a href="https://scholar.google.com/citations?user=3lMuodUAAAAJ"><strong>Xiaobin Hu <sup>2</sup></strong></a>
-  ·
+  &middot;
   <a href="https://scholar.google.com/citations?hl=zh-CN&user=m3KDreEAAAAJ"><strong>Zhucun Xue <sup>1</sup></strong></a>
-  ·
+  &middot;
   <a href="https://person.zju.edu.cn/en/yongliu"><strong>Yong Liu <sup>1</sup></strong></a>
-  ·
+  &middot;
   <a href="https://dr.ntu.edu.sg/cris/rp/rp02343"><strong>Dacheng Tao <sup>3</sup></strong></a>
 </p>
 
@@ -38,28 +38,13 @@
   <a href="">
     <img src="https://img.shields.io/badge/arXiv-Coming%20Soon-red?style=flat&logo=arXiv&logoColor=red" alt="arXiv">
   </a>
-  <a href="">
-    <img src="https://img.shields.io/badge/Website-Coming%20Soon-green?style=flat&logo=googlechrome&logoColor=green" alt="Website">
+  <a href="https://rinke02.github.io/wencanjiang.github.io/projects/SPIKE/">
+    <img src="https://img.shields.io/badge/Website-Online-green?style=flat&logo=googlechrome&logoColor=green" alt="Website">
   </a>
   <a href="">
     <img src="https://img.shields.io/badge/Paper-Coming%20Soon-blue?style=flat" alt="Paper">
   </a>
 </p>
-
-<a name="introduction"></a>
-
-# Continuous Updates
-
-This repository contains the minimal public source release for **SPIKE**, an adaptive dual-controller framework for cost-efficient long-horizon multimodal game agents.
-
-SPIKE treats strategic reasoning as a budgeted resource. An Event Trigger decides when to deliberate, a Strategic Controller handles planning and recovery, a Reactive Controller executes low-cost local actions, and Hierarchical Memory retrieves controller-specific evidence.
-
-This source snapshot keeps the core Python agent, Stardew environment, SMAPI mod source, task suites, benchmark helper scripts, and public configuration templates. It intentionally excludes local run outputs, caches, screenshots, private `.env` files, game-save snapshots, generated documentation, and large experiment artifacts.
-
-**Update:**
-
-- **[2026-05-13]** Initial public source snapshot prepared.
-- **[Coming soon]** arXiv, project website, paper link, leaderboard, and citation.
 
 <a name="highlight"></a>
 
@@ -78,22 +63,21 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 
 # Summary of Contents
 
-- [Continuous Updates](#continuous-updates)
 - [Highlight](#highlight)
 - [Summary of Contents](#summary-of-contents)
 - [Method Overview](#method-overview)
 - [Installation](#installation)
-    - [1. Install prerequisites](#1-install-prerequisites)
-    - [2. Install requirements](#2-install-requirements)
-    - [3. Configure local environment](#3-configure-local-environment)
-    - [4. Build or install the mod](#4-build-or-install-the-mod)
+  - [1. Prepare the game environment](#1-prepare-the-game-environment)
+  - [2. Install the Python runtime](#2-install-the-python-runtime)
+  - [3. Configure local environment](#3-configure-local-environment)
 - [Configuration](#configuration)
+- [Resources](#resources)
+- [Components](#components)
 - [Usage](#usage)
-    - [Qwen](#qwen)
-    - [OpenAI](#openai)
-    - [Gemini with Qwen embeddings](#gemini-with-qwen-embeddings)
-    - [Useful scripts](#useful-scripts)
-- [Experiments](#experiments)
+  - [Qwen](#qwen)
+  - [OpenAI-compatible backend](#openai-compatible-backend)
+  - [Gemini with Qwen embeddings](#gemini-with-qwen-embeddings)
+  - [Useful scripts](#useful-scripts)
 - [Citation](#citation)
 - [Contact](#contact)
 
@@ -113,22 +97,17 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 
 # Installation
 
-### 1. Install prerequisites
+### 1. Prepare the game environment
 
-- Windows
-- Python 3.10.9
-- Conda environment named `cradle_modify`
-- Stardew Valley
-- SMAPI installed for Stardew Valley
-- `StarDojoMod` built from `StardojoMod/` or installed into the Stardew Valley `Mods` directory
+For Stardew Valley, SMAPI, StarDojoMod, and other game-side setup details, follow the official [StarDojo](https://github.com/StarDojo2025/stardojo) instructions.
 
-### 2. Install requirements
+### 2. Install the Python runtime
 
 ```powershell
-git clone <your-spike-repo-url>
-cd spike
-conda create -n cradle_modify python=3.10.9
-conda activate cradle_modify
+git clone https://github.com/Rinke02/SPIKE.git
+cd SPIKE
+conda create -n Spike python=3.10.9
+conda activate Spike
 python -m pip install -r requirements.txt
 python -m pip install -e ./agent
 ```
@@ -141,7 +120,7 @@ Create your local environment file:
 Copy-Item env/.env.example env/.env
 ```
 
-Fill in `env/.env` with your local `STARDEW_APP_PATH` and the model API key you plan to use.
+Fill in `env/.env` with your local `STARDEW_APP_PATH` and the API key variables referenced by the config you use.
 
 Set project paths for the current Windows PowerShell session:
 
@@ -149,15 +128,11 @@ Set project paths for the current Windows PowerShell session:
 .\setup.ps1
 ```
 
-### 4. Build or install the mod
-
-Open `StardojoMod/StardojoMod.sln` in Visual Studio or a compatible C# environment, build the project, and copy the output into your Stardew Valley `Mods` directory if your build setup does not do so automatically.
-
 <a name="configuration"></a>
 
 # Configuration
 
-This source release includes public templates for Qwen, OpenAI, and Gemini:
+This source release includes public templates for Qwen, OpenAI-compatible, and Gemini runs:
 
 ```text
 agent/conf/qwen_config.json
@@ -166,19 +141,47 @@ agent/conf/gemini_config.json
 agent/conf/env_config_stardew.json
 ```
 
-Qwen uses DashScope's OpenAI-compatible API by default. Set `DASHSCOPE_API_KEY` in `env/.env`.
+The public config files keep the model names and embedding settings used by the local experiments, while API keys and service URLs are left blank. Fill in `base_url`, `emb_base_url`, `api_key`, `emb_api_key`, or the corresponding environment variables for your own provider.
 
-OpenAI uses `OPENAI_API_KEY`.
-
-Gemini uses `GEMINI_API_KEY`. For Gemini runs, keep embeddings on Qwen or OpenAI by pointing `--embed_config` to `qwen_config.json` or `openai_config.json`.
+- `agent/conf/openai_config.json`: OpenAI-compatible backend used for local reproducibility. The default model field is `Qwen/Qwen3.5-397B-A17B-FP8`, and the text embedding model is `BAAI/bge-base-en-v1.5`.
+- `agent/conf/qwen_config.json`: Qwen-compatible configuration with `qwen2.5-vl-72b-instruct` and `BAAI/bge-base-en-v1.5`.
+- `agent/conf/gemini_config.json`: Gemini configuration with `gemini-2.5-pro-preview-03-25`. For Gemini runs, keep embeddings on Qwen or the OpenAI-compatible config by pointing `--embed_config` to `qwen_config.json` or `openai_config.json`.
 
 Claude, Azure, and private REST Claude configs are not part of this minimal public configuration.
+
+<a name="resources"></a>
+
+# Resources
+
+The required Stardew task save folders are included under:
+
+```text
+env/tasks/saves/save_new
+env/tasks/saves/save_farming
+env/tasks/saves/save_quests
+```
+
+The default text embedding model is [BAAI/bge-base-en-v1.5](https://huggingface.co/BAAI/bge-base-en-v1.5). When this model is used through `sentence-transformers`, it can be downloaded automatically on first use or prepared in your local Hugging Face cache in advance.
+
+<a name="components"></a>
+
+# Components
+
+- `agent/`: core SPIKE agent package, including controller logic, memory modules, Stardew integration, resources, and model configuration templates.
+- `StardojoMod/`: public SMAPI mod source used by the StarDojo-based Stardew Valley runtime.
+- `env/`: Stardew runner code, task suites, save folders, game data, and environment utilities.
+- `run_lite100_parallel.py`: full Lite-100 parallel benchmark entry point.
+- `run_lite100_bigbrain_only.py`: Lite-100 BigBrain-only benchmark variant.
+- `run_lite_diagnostic_parallel.py`: smaller diagnostic benchmark entry point.
+- `run_regression_focused.py`: focused regression task suite entry point.
+- `summarize_run_results.py`: helper script for summarizing run outputs.
+- `tests/`: public-path checks for runner and worker behavior.
 
 <a name="usage"></a>
 
 # Usage
 
-Run from the repository root with `cradle_modify` activated.
+Run from the repository root with `Spike` activated.
 
 ### Qwen
 
@@ -186,7 +189,7 @@ Run from the repository root with `cradle_modify` activated.
 python run_lite100_parallel.py --dry_run --llm_config agent/conf/qwen_config.json --embed_config agent/conf/qwen_config.json
 ```
 
-### OpenAI
+### OpenAI-compatible backend
 
 ```powershell
 python run_lite_diagnostic_parallel.py --dry_run --llm_config agent/conf/openai_config.json --embed_config agent/conf/openai_config.json
@@ -198,7 +201,7 @@ python run_lite_diagnostic_parallel.py --dry_run --llm_config agent/conf/openai_
 python run_regression_focused.py --dry_run --llm_config agent/conf/gemini_config.json --embed_config agent/conf/qwen_config.json
 ```
 
-Remove `--dry_run` when your Stardew Valley, SMAPI, mod, and API keys are ready.
+Remove `--dry_run` after completing the game-side setup in [StarDojo](https://github.com/StarDojo2025/stardojo), preparing `env/.env`, and filling in the required model provider settings.
 
 ### Useful scripts
 
@@ -210,28 +213,6 @@ Remove `--dry_run` when your Stardew Valley, SMAPI, mod, and API keys are ready.
 - `verify_qwen_no_key.py`: check Qwen config behavior without publishing keys
 
 Runtime output is written under `runs/`, which is ignored by Git.
-
-<a name="experiments"></a>
-
-# Experiments
-
-<img src="assets/pareto_tradeoff.png" width="760">
-
-**Effectiveness-efficiency trade-off on Lite-100.** The two panels compare success against token use and latency; upper-left is better.
-
-<img src="assets/mechanistic_analysis.png" width="760">
-
-**Mechanistic analysis.** Controller allocation and hierarchical memory explain the gains in recovery, efficiency, and sustained task progress.
-
-<img src="assets/qualitative_analysis.png" width="760">
-
-**Qualitative analysis.** Coming soon.
-
-For now, you can run focused public-path checks:
-
-```powershell
-python -m pytest tests/test_run_lite100_parallel.py tests/test_parallel_worker_guard.py -q
-```
 
 <a name="citation"></a>
 

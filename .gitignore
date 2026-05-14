@@ -46,8 +46,14 @@ screenshots/
 *.bak
 *.bak_*
 
-# Game save snapshots are not part of the minimal source release.
+# Keep ad-hoc game save snapshots out, while allowing the public task saves.
 env/tasks/saves/save_*/
+!env/tasks/saves/save_new/
+!env/tasks/saves/save_new/**
+!env/tasks/saves/save_farming/
+!env/tasks/saves/save_farming/**
+!env/tasks/saves/save_quests/
+!env/tasks/saves/save_quests/**
 
 # Generated documentation site.
 docs/docs/

@@ -7,3 +7,4 @@
 *.mp4 binary
 *.zip binary
 *.npz binary
+env/tasks/saves/** binary
