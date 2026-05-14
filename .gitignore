@@ -46,6 +46,15 @@ screenshots/
 *.bak
 *.bak_*
 
+# Local model weights and vector database artifacts.
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.gguf
+chroma.sqlite3
+
 # Keep ad-hoc game save snapshots out, while allowing the public task saves.
 env/tasks/saves/save_*/
 !env/tasks/saves/save_new/
