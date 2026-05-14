@@ -8,6 +8,7 @@ import shutil
 import re
 import datetime as dt
 import subprocess
+import traceback
 
 from stardew_env import *
 from agent.stardojo.stardojo_react_agent import *
@@ -484,6 +485,8 @@ class StarDojoLLM(StarDojo):
         self.last_reset_duration_sec = None
         self.last_set_agent_duration_sec = None
         self.last_reset_error = ""
+        self.last_reset_traceback = ""
+        self.last_reset_stage = ""
         self.consecutive_reset_errors = 0
         llm_meta = _load_provider_model_metadata(self.llm_provider_config_path)
         embed_meta = _load_provider_model_metadata(self.embed_provider_config_path)
@@ -593,6 +596,9 @@ class StarDojoLLM(StarDojo):
             "video_frames_written": self.get_task_video_status().get("frames_written"),
             "video_error": self.get_task_video_status().get("error"),
             "video_warning": self.get_task_video_status().get("warning"),
+            "last_reset_error": self.last_reset_error,
+            "last_reset_traceback": self.last_reset_traceback,
+            "last_reset_stage": self.last_reset_stage,
         }
 
     def _build_task_meta(self) -> Dict[str, Any]:
@@ -663,6 +669,8 @@ class StarDojoLLM(StarDojo):
         if recovered is not None:
             info["recovered"] = bool(recovered)
         info["task_meta"]["runtime_exit_reason"] = info["runtime_exit_reason"]
+        if self.last_reset_traceback:
+            info["reset_traceback"] = self.last_reset_traceback
         return info
 
     def _build_task_transition_info(
@@ -679,6 +687,8 @@ class StarDojoLLM(StarDojo):
         }
         if error:
             info["error"] = str(error)
+        if self.last_reset_traceback:
+            info["reset_traceback"] = self.last_reset_traceback
         return info
 
     def _has_pending_claimed_task(self) -> bool:
@@ -725,10 +735,14 @@ class StarDojoLLM(StarDojo):
     def reset(self, ) -> bool:
         reset_started = time.time()
         self.last_reset_error = ""
+        self.last_reset_traceback = ""
+        self.last_reset_stage = "start"
         time.sleep(self.env_id * 0.3)
+        self.last_reset_stage = "create_action_proxy"
         self.action_proxy = actions.ActionProxy(self.port)
         self._pause_lease_active = False
         self._reset_screenshot_cache()
+        self.last_reset_stage = "create_skill_executor"
         self.skill_executer = SkillExecutor(actionproxy=self.action_proxy)
         if (
             self.agent is not None
@@ -743,6 +757,7 @@ class StarDojoLLM(StarDojo):
                 return False
 
             is_new_task = False
+            self.last_reset_stage = "claim_task"
             if self.current_task_finsh:
                 self.task_config = self.task_queue.get_nowait()
                 is_new_task = True
@@ -783,6 +798,7 @@ class StarDojoLLM(StarDojo):
                 # dequeued task must get a fresh agent/log directory.
                 self._refresh_log_dir_name(self.task_name, self.task_id)
 
+            self.last_reset_stage = "load_task"
             task = load_task.load_task(type=self.task_type, id=self.task_id)
             self.task_description = str(task.llm_description or self.task_description or "").strip() or self.task_description
             if self.output_video and self.task_config.get("result_run_dir"):
@@ -837,6 +853,7 @@ class StarDojoLLM(StarDojo):
                 find_and_kill_process_by_port(range(self.port, self.port + 1))
 
             def _restart_game_process() -> None:
+                self.last_reset_stage = "restart_game_process"
                 if getattr(self, "game_process", None) is not None:
                     terminate_process(self.game_process, log_fn=_ts_print)
                     self.game_process = None
@@ -866,11 +883,14 @@ class StarDojoLLM(StarDojo):
             if self.new_game and not existing_server_ready:
                 _restart_game_process()
 
+            self.last_reset_stage = "wait_for_server"
             if not self.action_proxy.wait_for_server(timeout_s=10.0, poll_interval_s=0.5):
                 raise RuntimeError(f"Server did not become ready on port {self.port}")
+            self.last_reset_stage = "init_task"
             self.task.init_task(self.task_proxy)
 
             time.sleep(2)
+            self.last_reset_stage = "wait_game_start"
             if not self.action_proxy.wait_game_start():
                 logging.warning(f"Port {self.port}: wait_game_start failed after init_task, retrying once")
                 time.sleep(2)
@@ -898,16 +918,20 @@ class StarDojoLLM(StarDojo):
                             raise RuntimeError("wait_game_start timeout during parallel task initialization")
 
             try:
+                self.last_reset_stage = "clear_hud_messages"
                 self.task_proxy.clear_hud_messages()
             except Exception:
                 pass
 
+            self.last_reset_stage = "set_mmap_reader"
             self.action_proxy.set_mmap_reader()
             try:
+                self.last_reset_stage = "initial_observe"
                 self.action_proxy.observe()
             except Exception:
                 pass
             if self.output_video:
+                self.last_reset_stage = "start_task_video"
                 self.start_task_video(self.task_video_path)
 
             if is_new_task:
@@ -916,18 +940,24 @@ class StarDojoLLM(StarDojo):
             self.truncated = False
             self.consecutive_reset_errors = 0
             self.last_reset_duration_sec = round(time.time() - reset_started, 3)
+            self.last_reset_stage = "ready"
             return True
 
         except Empty:
 
             self.if_task_queue_empty = True
             self.last_reset_error = ""
+            self.last_reset_traceback = ""
+            self.last_reset_stage = "queue_empty"
             self.last_reset_duration_sec = round(time.time() - reset_started, 3)
             return False
         except Exception as e:
+            reset_traceback = traceback.format_exc()
             logging.exception(f"Reset failed on port {self.port}: {e}")
+            logging.error("Reset traceback on port %s:\n%s", self.port, reset_traceback)
             self._clear_runtime_state_for_claimed_task(preserve_task_start_time=True)
             self.last_reset_error = str(e)
+            self.last_reset_traceback = reset_traceback
             self.consecutive_reset_errors += 1
             self.last_reset_duration_sec = round(time.time() - reset_started, 3)
             return False

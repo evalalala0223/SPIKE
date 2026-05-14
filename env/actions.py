@@ -86,8 +86,35 @@ class SharedMemoryReader:
         stardew_app_parent_path = os.path.dirname(stardew_app_path)
         mmap_file = os.path.join(stardew_app_parent_path, f"shared_memory_{port}.bin")
         self.mmap_file = mmap_file
-        self.f = open(self.mmap_file, "r+b")
-        self.mm = mmap.mmap(self.f.fileno(), self.mmap_size, access=mmap.ACCESS_WRITE)
+        self.f = None
+        self.mm = None
+
+        deadline = time.time() + 15.0
+        last_error: Optional[BaseException] = None
+        while True:
+            try:
+                file_size = os.path.getsize(self.mmap_file)
+                if file_size < self.mmap_size:
+                    raise OSError(
+                        22,
+                        f"shared memory file not ready: {file_size} < {self.mmap_size}",
+                    )
+                self.f = open(self.mmap_file, "r+b")
+                self.mm = mmap.mmap(self.f.fileno(), self.mmap_size, access=mmap.ACCESS_WRITE)
+                break
+            except (FileNotFoundError, OSError) as exc:
+                last_error = exc
+                if self.f is not None:
+                    try:
+                        self.f.close()
+                    except Exception:
+                        pass
+                    self.f = None
+                if time.time() >= deadline:
+                    raise RuntimeError(
+                        f"Shared memory file {self.mmap_file} was not ready for mmap"
+                    ) from last_error
+                time.sleep(0.1)
 
     def read_from_mmap(self):
         start_time = time.time()
@@ -110,8 +137,12 @@ class SharedMemoryReader:
                     return data
 
     def close(self):
-        self.mm.close()
-        self.f.close()
+        if self.mm is not None:
+            self.mm.close()
+            self.mm = None
+        if self.f is not None:
+            self.f.close()
+            self.f = None
 
 
 class ActionProxy:

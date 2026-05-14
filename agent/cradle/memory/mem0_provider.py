@@ -74,6 +74,8 @@ class Mem0Provider:
         self.metrics: Dict[str, Any] = self._load_metrics()
         if not self.records:
             self._bootstrap_records_if_empty()
+        if not self.records:
+            self._load_public_seed_records_if_empty()
         self._refresh_result_backfill_records_if_needed()
         self._compact_low_value_records(trigger="init")
         self._enforce_success_experience_cap(trigger="init")
@@ -162,6 +164,52 @@ class Mem0Provider:
         agent_root = os.path.normpath(assemble_project_path("."))
         repo_root = os.path.dirname(agent_root)
         return os.path.join(repo_root, "runs", "results")
+
+    @staticmethod
+    def _public_seed_path(namespace: str) -> str:
+        return os.path.normpath(assemble_project_path(f"./res/stardew/memory/{namespace}_mem0_seed.jsonl"))
+
+    def _load_public_seed_records_if_empty(self) -> None:
+        seed_path = self._public_seed_path(self.namespace)
+        if not os.path.exists(seed_path):
+            return
+
+        records_by_key: Dict[str, Dict[str, Any]] = {}
+        try:
+            with open(seed_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        raw = json.loads(line)
+                    except Exception:
+                        continue
+                    if not isinstance(raw, dict):
+                        continue
+                    normalized = self._normalize_record(raw)
+                    if normalized is None or self._is_low_value_record(normalized):
+                        continue
+                    key = str(normalized.get("key", ""))
+                    if not key:
+                        continue
+                    records_by_key[key] = normalized
+        except Exception as e:
+            logger.warn(f"[Mem0] Failed to load public seed records: {e}")
+            return
+
+        if not records_by_key:
+            return
+
+        self.records = list(records_by_key.values())
+        self._enforce_success_experience_cap(trigger="public_seed")
+        self._enforce_storage_governance(trigger="public_seed")
+        self._persist_records()
+        self.metrics["public_seed_records_total"] = int(self.metrics.get("public_seed_records_total", 0)) + len(self.records)
+        self.metrics["last_public_seed_records"] = len(self.records)
+        self.metrics["last_public_seed_path"] = seed_path
+        self._persist_metrics()
+        logger.write(f"[Mem0] Loaded {len(self.records)} public seed records from {seed_path}")
 
     def _record_from_success_result(self, path: str, now: float) -> Optional[Dict[str, Any]]:
         try:
