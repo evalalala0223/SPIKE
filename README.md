@@ -1,8 +1,7 @@
-<p align="center">
-  <a href="https://rinke02.github.io/wencanjiang.github.io/projects/SPIKE/">
-    <span style="display: inline-block; width: 44px; text-align: left;"><img width="36" alt="SPIKE" src="assets/logo.png" style="vertical-align: middle;"></span><strong><span style="font-size: 24px; vertical-align: middle;">SPIKE</span></strong><span style="display: inline-block; width: 44px;"></span>
-  </a>
-</p>
+<h1 align="center">
+  <img width="68" alt="SPIKE" src="assets/logo.png" align="center" style="vertical-align: middle;">
+  <span style="vertical-align: middle;">SPIKE</span>
+</h1>
 
 <p align="center">
   <strong>An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents</strong>
@@ -67,17 +66,17 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 - [Summary of Contents](#summary-of-contents)
 - [Method Overview](#method-overview)
 - [Installation](#installation)
-  - [1. Prepare the game environment](#1-prepare-the-game-environment)
-  - [2. Install the Python runtime](#2-install-the-python-runtime)
-  - [3. Configure local environment](#3-configure-local-environment)
+    - [1. Prepare the game environment](#1-prepare-the-game-environment)
+    - [2. Install the Python runtime](#2-install-the-python-runtime)
+    - [3. Configure local environment](#3-configure-local-environment)
 - [Configuration](#configuration)
 - [Resources](#resources)
 - [Components](#components)
 - [Usage](#usage)
-  - [Qwen](#qwen)
-  - [OpenAI-compatible backend](#openai-compatible-backend)
-  - [Gemini with Qwen embeddings](#gemini-with-qwen-embeddings)
-  - [Useful scripts](#useful-scripts)
+    - [Qwen](#qwen)
+    - [OpenAI-compatible backend](#openai-compatible-backend)
+    - [Gemini with Qwen embeddings](#gemini-with-qwen-embeddings)
+    - [Useful scripts](#useful-scripts)
 - [Citation](#citation)
 - [Contact](#contact)
 
@@ -141,13 +140,7 @@ agent/conf/gemini_config.json
 agent/conf/env_config_stardew.json
 ```
 
-The public config files keep the model names and embedding settings used by the local experiments, while API keys and service URLs are left blank. Fill in `base_url`, `emb_base_url`, `api_key`, `emb_api_key`, or the corresponding environment variables for your own provider.
-
-- `agent/conf/openai_config.json`: OpenAI-compatible backend used for local reproducibility. The default model field is `Qwen/Qwen3.5-397B-A17B-FP8`, and the text embedding model is `BAAI/bge-base-en-v1.5`.
-- `agent/conf/qwen_config.json`: Qwen-compatible configuration with `qwen2.5-vl-72b-instruct` and `BAAI/bge-base-en-v1.5`.
-- `agent/conf/gemini_config.json`: Gemini configuration with `gemini-2.5-pro-preview-03-25`. For Gemini runs, keep embeddings on Qwen or the OpenAI-compatible config by pointing `--embed_config` to `qwen_config.json` or `openai_config.json`.
-
-Claude, Azure, and private REST Claude configs are not part of this minimal public configuration.
+The public config files keep the model names and embedding settings used by the local experiments. Fill in `base_url`, `emb_base_url`, `api_key`, `emb_api_key`, or the corresponding environment variables for your own provider.
 
 <a name="resources"></a>
 
@@ -162,6 +155,8 @@ env/tasks/saves/save_quests
 ```
 
 The default text embedding model is [BAAI/bge-base-en-v1.5](https://huggingface.co/BAAI/bge-base-en-v1.5). When this model is used through `sentence-transformers`, it can be downloaded automatically on first use or prepared in your local Hugging Face cache in advance.
+
+The default visual embedding model is `local-image-embedding-v1`, implemented locally in `agent/cradle/runner/image_embedder.py`; it does not require downloading separate model weights.
 
 <a name="components"></a>
 
