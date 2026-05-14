@@ -1,7 +1,9 @@
-<h1 align="center">
-  <img width="68" alt="SPIKE" src="assets/logo.png" align="center" style="vertical-align: middle;">
-  <span style="vertical-align: middle;">SPIKE</span>
-</h1>
+<div align="center">
+  <h1>
+    <img width="68" alt="SPIKE" src="assets/logo.png" style="vertical-align: middle;">
+    <span style="vertical-align: middle;">SPIKE</span>
+  </h1>
+</div>
 
 <h3 align="center">
   An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents
@@ -10,7 +12,7 @@
 <p align="center">
   <a href="https://openreview.net/profile?id=~Wencan_Jiang1"><strong>Wencan Jiang <sup>1</sup></strong></a>
   &middot;
-  <a href="https://zhangzjn.github.io/"><strong>Jiangning Zhang <sup>1</sup></strong></a>
+  <a href="https://zhangzjn.github.io/"><strong>Jiangning Zhang <sup>1,✉</sup></strong></a>
   &middot;
   <a href="https://jianbiaomei.github.io/"><strong>Jianbiao Mei <sup>1</sup></strong></a>
   &middot;
