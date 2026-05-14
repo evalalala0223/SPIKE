@@ -163,9 +163,6 @@ The default visual embedding is local-image-embedding-v1, a deterministic local 
 - `StardojoMod/`: public SMAPI mod source used by the StarDojo-based Stardew Valley runtime.
 - `env/`: Stardew runner code, task suites, save folders, game data, and environment utilities.
 - `run_lite100_parallel.py`: full Lite-100 parallel benchmark entry point.
-- `run_lite100_bigbrain_only.py`: Lite-100 BigBrain-only benchmark variant.
-- `run_lite_diagnostic_parallel.py`: smaller diagnostic benchmark entry point.
-- `run_regression_focused.py`: focused regression task suite entry point.
 - `summarize_run_results.py`: helper script for summarizing run outputs.
 - `tests/`: public-path checks for runner and worker behavior.
 
