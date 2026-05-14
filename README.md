@@ -4,7 +4,7 @@
 </h1>
 
 <p align="center">
-  <strong>An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents</strong>
+  <span style="font-size: 1.35em;"><strong>An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents</strong></span>
 </p>
 
 <p align="center">
