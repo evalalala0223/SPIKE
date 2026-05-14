@@ -1,13 +1,10 @@
-<div align="center">
-  <h1>
-    <img width="68" alt="SPIKE" src="assets/logo.png" style="vertical-align: middle;">
-    <span style="vertical-align: middle;">SPIKE</span>
-  </h1>
-</div>
+<h1 align="center">
+  <img width="76" alt="SPIKE" src="assets/logo.png"> SPIKE
+</h1>
 
-<h3 align="center">
+<h2 align="center">
   An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents
-</h3>
+</h2>
 
 <p align="center">
   <a href="https://openreview.net/profile?id=~Wencan_Jiang1"><strong>Wencan Jiang <sup>1</sup></strong></a>
