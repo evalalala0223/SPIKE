@@ -73,9 +73,6 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 - [Resources](#resources)
 - [Components](#components)
 - [Usage](#usage)
-    - [Qwen](#qwen)
-    - [OpenAI-compatible backend](#openai-compatible-backend)
-    - [Gemini with Qwen embeddings](#gemini-with-qwen-embeddings)
     - [Useful scripts](#useful-scripts)
 - [Citation](#citation)
 - [Contact](#contact)
@@ -156,7 +153,7 @@ env/tasks/saves/save_quests
 
 The default text embedding model is [BAAI/bge-base-en-v1.5](https://huggingface.co/BAAI/bge-base-en-v1.5). When this model is used through `sentence-transformers`, it can be downloaded automatically on first use or prepared in your local Hugging Face cache in advance.
 
-The default visual embedding model is `local-image-embedding-v1`, implemented locally in `agent/cradle/runner/image_embedder.py`; it does not require downloading separate model weights.
+The default visual embedding is local-image-embedding-v1, a deterministic local image feature extractor implemented in agent/cradle/runner/image_embedder.py.
 
 <a name="components"></a>
 
@@ -178,32 +175,15 @@ The default visual embedding model is `local-image-embedding-v1`, implemented lo
 
 Run from the repository root with `Spike` activated.
 
-### Qwen
-
 ```powershell
 python run_lite100_parallel.py --dry_run --llm_config agent/conf/qwen_config.json --embed_config agent/conf/qwen_config.json
 ```
 
-### OpenAI-compatible backend
-
-```powershell
-python run_lite_diagnostic_parallel.py --dry_run --llm_config agent/conf/openai_config.json --embed_config agent/conf/openai_config.json
-```
-
-### Gemini with Qwen embeddings
-
-```powershell
-python run_regression_focused.py --dry_run --llm_config agent/conf/gemini_config.json --embed_config agent/conf/qwen_config.json
-```
-
-Remove `--dry_run` after completing the game-side setup in [StarDojo](https://github.com/StarDojo2025/stardojo), preparing `env/.env`, and filling in the required model provider settings.
+Replace the config paths with the provider templates under `agent/conf/` as needed. Remove `--dry_run` after completing the game-side setup in [StarDojo](https://github.com/StarDojo2025/stardojo), preparing `env/.env`, and filling in the required model provider settings.
 
 ### Useful scripts
 
 - `run_lite100_parallel.py`: full Lite100 parallel benchmark
-- `run_lite100_bigbrain_only.py`: Lite100 BigBrain-only variant
-- `run_lite_diagnostic_parallel.py`: smaller diagnostic subset
-- `run_regression_focused.py`: focused regression task suite
 - `summarize_run_results.py`: summarize benchmark outputs
 - `verify_qwen_no_key.py`: check Qwen config behavior without publishing keys
 
@@ -213,19 +193,8 @@ Runtime output is written under `runs/`, which is ignored by Git.
 
 # Citation
 
-Coming soon.
-
-```bibtex
-@misc{spike2026,
-  title        = {SPIKE: An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents},
-  author       = {Coming soon},
-  year         = {2026},
-  note         = {Coming soon}
-}
-```
-
 <a name="contact"></a>
 
 # Contact
 
-Coming soon.
+For issues or contributions, feel free to open an issue or pull request.
