@@ -47,7 +47,7 @@
 
 <a name="highlight"></a>
 
-# Highlight
+# ✨ Highlight!!!
 
 <img src="assets/teaser.png" width="760">
 
@@ -60,28 +60,28 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 
 <a name="contents"></a>
 
-# Summary of Contents
+# 🧭 Summary of Contents
 
-- [Highlight](#highlight)
-- [Summary of Contents](#contents)
-- [Method Overview](#method-overview)
-- [Installation](#installation)
+- [✨ Highlight!!!](#highlight)
+- [🧭 Summary of Contents](#contents)
+- [🧠 Method Overview](#method-overview)
+- [🛠️ Installation](#installation)
     - [1. Prepare the game environment](#1-prepare-the-game-environment)
     - [2. Install the Python runtime](#2-install-the-python-runtime)
     - [3. Configure local environment](#3-configure-local-environment)
-- [Configuration](#configuration)
-- [Resources](#resources)
-- [Components](#components)
-- [Usage](#usage)
+- [⚙️ Configuration](#configuration)
+- [📦 Resources](#resources)
+- [🧩 Components](#components)
+- [🚀 Usage](#usage)
     - [Useful scripts](#useful-scripts)
-- [Reproducibility Notes](#reproducibility-notes)
-- [Verification](#verification)
-- [Citation](#citation)
-- [Contact](#contact)
+- [✅ Reproducibility Notes](#reproducibility-notes)
+- [✅ Verification](#verification)
+- [📚 Citation](#citation)
+- [📬 Contact](#contact)
 
 <a name="method-overview"></a>
 
-# Method Overview
+# 🧠 Method Overview
 
 <img src="assets/architecture.png" width="760">
 
@@ -89,7 +89,7 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 
 <a name="installation"></a>
 
-# Installation
+# 🛠️ Installation
 
 ### 1. Prepare the game environment
 
@@ -124,7 +124,7 @@ Set project paths for the current Windows PowerShell session:
 
 <a name="configuration"></a>
 
-# Configuration
+# ⚙️ Configuration
 
 This source release includes public templates for Qwen, OpenAI-compatible, and Gemini runs:
 
@@ -139,7 +139,7 @@ The public config files keep model names and embedding settings, but do not cont
 
 <a name="resources"></a>
 
-# Resources
+# 📦 Resources
 
 The required Stardew task save folders are included under:
 
@@ -163,7 +163,7 @@ This seed contains successful state-action examples only. It does not include fu
 
 <a name="components"></a>
 
-# Components
+# 🧩 Components
 
 - `agent/`: core SPIKE agent package, including controller logic, memory modules, Stardew integration, resources, and model configuration templates.
 - `StardojoMod/`: public SMAPI mod source used by the StarDojo-based Stardew Valley runtime.
@@ -174,7 +174,7 @@ This seed contains successful state-action examples only. It does not include fu
 
 <a name="usage"></a>
 
-# Usage
+# 🚀 Usage
 
 Run from the repository root with `Spike` activated.
 
@@ -194,7 +194,7 @@ Runtime output is written under `runs/`, which is ignored by Git.
 
 <a name="reproducibility-notes"></a>
 
-# Reproducibility Notes
+# ✅ Reproducibility Notes
 
 - Use a clean clone or clear ignored runtime directories when you want a history-free evaluation.
 - Keep `runs/`, `cache/`, `agent/cache/`, and `env/cache/` local. These directories may contain runtime history used by memory components.
@@ -205,7 +205,7 @@ Runtime output is written under `runs/`, which is ignored by Git.
 
 <a name="verification"></a>
 
-# Verification
+# ✅ Verification
 
 After installation, run the public smoke tests:
 
@@ -223,10 +223,10 @@ For an actual game-side smoke test, use a configured `env/.env` and your own mod
 
 <a name="citation"></a>
 
-# Citation
+# 📚 Citation
 
 <a name="contact"></a>
 
-# Contact
+# 📬 Contact
 
 For issues or contributions, feel free to open an issue or pull request.
