@@ -74,6 +74,7 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 - [Components](#components)
 - [Usage](#usage)
     - [Useful scripts](#useful-scripts)
+- [Verification](#verification)
 - [Citation](#citation)
 - [Contact](#contact)
 
@@ -160,7 +161,7 @@ The default visual embedding is local-image-embedding-v1, a deterministic local 
 - `env/`: Stardew runner code, task suites, save folders, game data, and environment utilities.
 - `run_lite100_parallel.py`: full Lite-100 parallel benchmark entry point.
 - `summarize_run_results.py`: helper script for summarizing run outputs.
-- `tests/`: public-path checks for runner and worker behavior.
+- `tests/`: public smoke tests for the Lite-100 runner and local embedding defaults.
 
 <a name="usage"></a>
 
@@ -181,6 +182,22 @@ Replace the config paths with the provider templates under `agent/conf/` as need
 - `verify_qwen_no_key.py`: check Qwen config behavior without publishing keys
 
 Runtime output is written under `runs/`, which is ignored by Git.
+
+<a name="verification"></a>
+
+# Verification
+
+After installation, run the public smoke tests:
+
+```powershell
+python -m pytest -q
+```
+
+You can also check the Lite-100 command generation without launching Stardew Valley:
+
+```powershell
+python run_lite100_parallel.py --dry_run --llm_config agent/conf/qwen_config.json --embed_config agent/conf/qwen_config.json
+```
 
 <a name="citation"></a>
 

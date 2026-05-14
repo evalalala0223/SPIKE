@@ -1,7 +1,0 @@
-{
-  "run_status": "running",
-  "expected_tasks": 100,
-  "actual_tasks": 8,
-  "parallel_numb": 8,
-  "tasks": []
-}
