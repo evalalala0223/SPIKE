@@ -1,8 +1,6 @@
-<p align="center">
-  <img width="76" alt="SPIKE logo" src="assets/logo.png">
-</p>
-
-<h1 align="center">SPIKE</h1>
+<h1 align="center">
+  <img width="92" alt="SPIKE logo" src="assets/logo.png"> <big>SPIKE</big>
+</h1>
 
 <h2 align="center">
   An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents
@@ -38,7 +36,7 @@
   <a href="">
     <img src="https://img.shields.io/badge/arXiv-Coming%20Soon-red?style=flat&logo=arXiv&logoColor=red" alt="arXiv">
   </a>
-  <a href="https://rinke02.github.io/wencanjiang.github.io/projects/SPIKE/">
+  <a href="https://wencanjiang.github.io/projects/SPIKE/">
     <img src="https://img.shields.io/badge/Website-Online-green?style=flat&logo=googlechrome&logoColor=green" alt="Website">
   </a>
   <a href="">
