@@ -74,7 +74,6 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 - [🧩 Components](#components)
 - [🚀 Usage](#usage)
     - [Useful scripts](#useful-scripts)
-- [✅ Reproducibility Notes](#reproducibility-notes)
 - [✅ Verification](#verification)
 - [📚 Citation](#citation)
 - [📬 Contact](#contact)
@@ -153,14 +152,6 @@ The default text embedding model is [BAAI/bge-base-en-v1.5](https://huggingface.
 
 The default visual embedding is local-image-embedding-v1, a deterministic local image feature extractor implemented in agent/cradle/runner/image_embedder.py.
 
-The public release includes a small sanitized memory seed at:
-
-```text
-agent/res/stardew/memory/stardew_valley_mem0_seed.jsonl
-```
-
-This seed contains successful state-action examples only. It does not include full run logs, screenshots, videos, local paths, API keys, or model weights. Runtime memory and history remain local under ignored directories such as `runs/`, `cache/`, `agent/cache/`, and `env/cache/`.
-
 <a name="components"></a>
 
 # 🧩 Components
@@ -170,7 +161,7 @@ This seed contains successful state-action examples only. It does not include fu
 - `env/`: Stardew runner code, task suites, save folders, game data, and environment utilities.
 - `run_lite100_parallel.py`: standard Lite-100 parallel benchmark entry point.
 - `summarize_run_results.py`: helper script for summarizing run outputs.
-- `tests/`: public smoke tests for the Lite-100 runner and local embedding defaults.
+- `tests/`: minimal checks for the Lite-100 runner and local embedding defaults.
 
 <a name="usage"></a>
 
@@ -192,26 +183,9 @@ Replace the config paths with the provider templates under `agent/conf/` as need
 
 Runtime output is written under `runs/`, which is ignored by Git.
 
-<a name="reproducibility-notes"></a>
-
-# ✅ Reproducibility Notes
-
-- Use a clean clone or clear ignored runtime directories when you want a history-free evaluation.
-- Keep `runs/`, `cache/`, `agent/cache/`, and `env/cache/` local. These directories may contain runtime history used by memory components.
-- `agent/conf/enhanced_config.yaml` keeps `features.use_mem0: false` by default for a clean public baseline. If you enable Mem0 and no local memory exists, the sanitized public seed is loaded automatically.
-- Parallel reset diagnostics now include `last_reset_stage` and full reset tracebacks in task metadata when reset fails.
-- The shared-memory reader waits for the SMAPI mmap file to be ready before mapping it, reducing intermittent Windows reset failures such as `[Errno 22] Invalid argument`.
-- The public release does not include pretrained visual model weights. Large model artifacts should stay in local caches outside Git.
-
 <a name="verification"></a>
 
 # ✅ Verification
-
-After installation, run the public smoke tests:
-
-```powershell
-python -m pytest -q
-```
 
 You can also check the Lite-100 command generation without launching Stardew Valley:
 
