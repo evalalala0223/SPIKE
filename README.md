@@ -1,10 +1,14 @@
-<h1 align="center">
-  <img width="92" align="absmiddle" alt="SPIKE logo" src="assets/logo.png">&nbsp;<big><big>SPIKE</big></big>&emsp;&emsp;&emsp;
-</h1>
+<p align="center">
+  <img width="92" align="absmiddle" alt="SPIKE logo" src="assets/logo.png">&nbsp;<strong><big><big><big>SPIKE</big></big></big></strong>&emsp;&emsp;&emsp;
+</p>
 
-<h2 align="center">
-  An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents
-</h2>
+<hr>
+
+<p align="center">
+  <strong><big>An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents</big></strong>
+</p>
+
+<hr>
 
 <p align="center">
   <a href="https://openreview.net/profile?id=~Wencan_Jiang1"><strong>Wencan Jiang <sup>1</sup></strong></a>
@@ -44,6 +48,12 @@
   </a>
 </p>
 
+<a name="introduction"></a>
+
+# 📷 Introduction
+
+SPIKE is an adaptive dual-controller framework for long-horizon game agents in Stardew Valley. It combines strategic replanning, fast reactive execution, and controller-specific memory to improve task success while reducing unnecessary LLM calls.
+
 <a name="highlight"></a>
 
 # ✨ Highlight!!!
@@ -61,6 +71,7 @@ SPIKE is designed for long-horizon multimodal agents that must remain goal-direc
 
 # 🧭 Summary of Contents
 
+- [📷 Introduction](#introduction)
 - [✨ Highlight!!!](#highlight)
 - [🧭 Summary of Contents](#contents)
 - [🧠 Method Overview](#method-overview)
