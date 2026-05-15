@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="92" align="absmiddle" alt="SPIKE logo" src="assets/logo.png">&nbsp;<strong><big><big><big>SPIKE</big></big></big></strong>&emsp;&emsp;&emsp;
+  <img width="92" align="absmiddle" alt="SPIKE logo" src="assets/logo.png">&nbsp;<strong><big><big><big><big>SPIKE</big></big></big></big></strong>&emsp;&emsp;&emsp;
 </p>
 
 <h2 align="center">
