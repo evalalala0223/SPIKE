@@ -1,6 +1,6 @@
-<p align="center">
-  <img width="92" align="absmiddle" alt="SPIKE logo" src="assets/logo.png">&nbsp;<strong><big><big><big><big>SPIKE</big></big></big></big></strong>&emsp;&emsp;&emsp;
-</p>
+<h1 align="center">
+  <img width="96" align="absmiddle" alt="SPIKE logo" src="assets/logo.png">&nbsp;<strong><big><big>SPIKE</big></big></strong>&emsp;&emsp;&emsp;
+</h1>
 
 <h2 align="center">
   An Adaptive Dual Controller Framework for Cost-Efficient Long-Horizon Game Agents
