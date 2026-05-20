@@ -33,14 +33,14 @@
 </p>
 
 <p align="center">
-  <a href="">
-    <img src="https://img.shields.io/badge/arXiv-Coming%20Soon-red?style=flat&logo=arXiv&logoColor=red" alt="arXiv">
+  <a href="https://arxiv.org/abs/2605.18636">
+    <img src="https://img.shields.io/badge/arXiv-2605.18636-red?style=flat&logo=arXiv&logoColor=red" alt="arXiv">
   </a>
   <a href="https://wencanjiang.github.io/projects/SPIKE/">
     <img src="https://img.shields.io/badge/Website-Online-green?style=flat&logo=googlechrome&logoColor=green" alt="Website">
   </a>
-  <a href="">
-    <img src="https://img.shields.io/badge/Paper-Coming%20Soon-blue?style=flat" alt="Paper">
+  <a href="https://arxiv.org/pdf/2605.18636">
+    <img src="https://img.shields.io/badge/Paper-PDF-blue?style=flat" alt="Paper">
   </a>
 </p>
 
