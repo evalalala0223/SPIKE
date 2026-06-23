@@ -1,0 +1,146 @@
+<mxfile host="Electron" version="26.0.0">
+  <diagram id="langgraph-flow" name="LangGraph Workflow">
+    <mxGraphModel dx="1422" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="SPIKE Big Brain — LangGraph Workflow (Strategic Controller Internal)" style="text;strokeColor=none;fillColor=none;fontSize=22;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="1100" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Each box = 1 LLM call (or compute). All nodes share a state dict (GameState)." style="text;strokeColor=none;fillColor=none;fontSize=13;fontStyle=2;align=center;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="200" y="60" width="1100" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- Left side: Main flow                          -->
+        <!-- ============================================ -->
+
+        <!-- ENTRY -->
+        <mxCell id="entry" value="ENTRY&#10;(env observation arrives)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="120" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: info_gathering -->
+        <mxCell id="info_gathering" value="&lt;b&gt;Node 1: info_gathering&lt;/b&gt;&lt;br&gt;&lt;font color='#666' size='2'&gt;LLM call: image &amp; state description&lt;/font&gt;&lt;br&gt;&lt;br&gt;Read screenshot + game state&lt;br&gt;Output: gathered_info (text)&lt;br&gt;&lt;font color='#999' size='2'&gt;output cap: 1024 tokens&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="80" y="220" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Decision 1: skip reflection? -->
+        <mxCell id="dec_skip" value="&lt;b&gt;Was last action&lt;br&gt;successful?&lt;/b&gt;&lt;br&gt;&lt;font color='#666' size='2'&gt;should_skip_reflection&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="380" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: self_reflection -->
+        <mxCell id="self_reflection" value="&lt;b&gt;Node 2: self_reflection&lt;/b&gt;&lt;br&gt;&lt;font color='#666' size='2'&gt;LLM call: reflect on failure&lt;/font&gt;&lt;br&gt;&lt;br&gt;Analyze why last action failed&lt;br&gt;Output: reflection (text)&lt;br&gt;&lt;font color='#999' size='2'&gt;output cap: 512 tokens&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="380" y="380" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: task_inference -->
+        <mxCell id="task_inference" value="&lt;b&gt;Node 3: task_inference&lt;/b&gt;&lt;br&gt;&lt;font color='#666' size='2'&gt;LLM call: infer current sub-task&lt;/font&gt;&lt;br&gt;&lt;br&gt;Decide what sub-task to do now&lt;br&gt;Output: current_task (text)&lt;br&gt;&lt;font color='#999' size='2'&gt;output cap: 800 tokens&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="80" y="540" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4: action_planning -->
+        <mxCell id="action_planning" value="&lt;b&gt;Node 4: action_planning&lt;/b&gt;&lt;br&gt;&lt;font color='#666' size='2'&gt;LLM call: plan next 4 actions&lt;/font&gt;&lt;br&gt;&lt;br&gt;Output: planned_actions[4]&#10;+ planning_reasoning&lt;br&gt;&lt;font color='#999' size='2'&gt;output cap: 2048 tokens&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="700" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Decision 2: dual-brain or single-brain? -->
+        <mxCell id="dec_brain" value="&lt;b&gt;Dual-brain mode?&lt;/b&gt;&lt;br&gt;&lt;font color='#666' size='2'&gt;should_execute_after_planning&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="860" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Node 5: skill_execute -->
+        <mxCell id="skill_execute" value="&lt;b&gt;Node 5: skill_execute&lt;/b&gt;&lt;br&gt;&lt;font color='#666' size='2'&gt;NOT an LLM call — Python dispatch&lt;/font&gt;&lt;br&gt;&lt;br&gt;Send action to game via socket&lt;br&gt;Output: execution_result&lt;br&gt;&lt;font color='#999' size='2'&gt;single-brain only&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="380" y="860" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- END -->
+        <mxCell id="end" value="END&#10;(plan handed off / step done)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1010" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- Right side: Shared State                      -->
+        <!-- ============================================ -->
+
+        <mxCell id="state_box" value="&lt;b&gt;Shared State (GameState dict)&lt;/b&gt;&#10;&#10;&lt;br&gt;&lt;br&gt;&lt;b&gt;Inputs:&lt;/b&gt;&lt;br&gt;step_id: int&lt;br&gt;screenshot: bytes&lt;br&gt;obs: dict (player, surroundings, ...)&lt;br&gt;task_description: str&lt;br&gt;history: list&lt;br&gt;&lt;br&gt;&lt;b&gt;Filled by nodes:&lt;/b&gt;&lt;br&gt;gathered_info ← Node 1&lt;br&gt;reflection ← Node 2&lt;br&gt;current_task ← Node 3&lt;br&gt;planned_actions ← Node 4&lt;br&gt;planning_reasoning ← Node 4&lt;br&gt;execution_result ← Node 5&#10;&lt;br&gt;&lt;br&gt;&lt;font color='#666'&gt;Every node reads previous outputs&lt;br&gt;and writes its own back to this dict.&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="780" y="220" width="320" height="500" as="geometry" />
+        </mxCell>
+
+        <!-- =============== -->
+        <!-- Right: Sample log output                      -->
+        <!-- =============== -->
+
+        <mxCell id="log_box" value="&lt;b&gt;What you actually see in stardojo.log&lt;/b&gt;&#10;&lt;br&gt;&lt;br&gt;&lt;font face='Courier New' size='2'&gt;[LangGraph Node] [OK] info_gathering&lt;br&gt;[LangGraph Node] [OK] self_reflection&lt;br&gt;[LangGraph Node] [OK] task_inference&lt;br&gt;[LangGraph Node] [OK] action_planning |&lt;br&gt;  4 actions: [&lt;br&gt;    'choose_item(slot_index=4)',&lt;br&gt;    'use(direction=&amp;quot;down&amp;quot;)',&lt;br&gt;    'move(x=-1, y=0)',&lt;br&gt;    'use(direction=&amp;quot;left&amp;quot;)'&lt;br&gt;  ]&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="220" width="320" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- Mode comparison box -->
+        <mxCell id="mode_box" value="&lt;b&gt;Single-brain vs Dual-brain branching&lt;/b&gt;&#10;&lt;br&gt;&lt;br&gt;&lt;b style='color:#82b366'&gt;Single-brain&lt;/b&gt; (your current mac setup):&lt;br&gt;Node 4 → Node 5 → END&lt;br&gt;Big brain plans AND executes.&lt;br&gt;&lt;br&gt;&lt;b style='color:#1864ab'&gt;Dual-brain&lt;/b&gt; (paper full version):&lt;br&gt;Node 4 → END (plan_only)&lt;br&gt;Big brain only plans;&lt;br&gt;Little brain executes the 4-step plan&lt;br&gt;over the next 4 reactive steps.&#10;&lt;br&gt;&lt;br&gt;&lt;font color='#666'&gt;That's why dual-brain saves tokens —&lt;br&gt;1 big brain call → 4 little brain steps.&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff9db;strokeColor=#d6b656;fontSize=12;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="520" width="320" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- Edges                                         -->
+        <!-- ============================================ -->
+
+        <mxCell id="e_entry_info" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" source="entry" target="info_gathering" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_info_dec" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" source="info_gathering" target="dec_skip" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_dec_skip_no" value="No → reflect" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;fontStyle=1;strokeColor=#b85450;fontColor=#b85450;" edge="1" source="dec_skip" target="self_reflection" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_dec_skip_yes" value="Yes → skip&#10;(save 1 LLM call)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;fontStyle=1;strokeColor=#82b366;fontColor=#2f7c39;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="dec_skip" target="task_inference" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_reflect_task" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" source="self_reflection" target="task_inference" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_task_action" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" source="task_inference" target="action_planning" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_action_dec" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;" edge="1" source="action_planning" target="dec_brain" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_dec_brain_dual" value="dual-brain&#10;→ plan_only" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;fontStyle=1;strokeColor=#1864ab;fontColor=#1864ab;" edge="1" source="dec_brain" target="end" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_dec_brain_single" value="single-brain&#10;→ execute" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;fontStyle=1;strokeColor=#82b366;fontColor=#2f7c39;" edge="1" source="dec_brain" target="skill_execute" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_skill_end" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="skill_execute" target="end" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Cross-references: nodes reading state -->
+        <mxCell id="ref_info" value="writes&#10;gathered_info" style="edgeStyle=none;html=1;dashed=1;endArrow=open;fontSize=10;strokeColor=#9673a6;fontColor=#5f3dc4;" edge="1" source="info_gathering" target="state_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ref_action" value="writes&#10;planned_actions" style="edgeStyle=none;html=1;dashed=1;endArrow=open;fontSize=10;strokeColor=#9673a6;fontColor=#5f3dc4;exitX=1;exitY=0;exitDx=0;exitDy=0;" edge="1" source="action_planning" target="state_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Footer note -->
+        <mxCell id="footer" value="Code: agent/cradle/runner/langgraph_workflow.py (graph) + langgraph_nodes.py (5 node implementations)&#10;Conditional edges (yellow diamonds) skip reflection when last action succeeded — saves cost on routine steps." style="text;strokeColor=none;fillColor=none;fontSize=12;fontStyle=2;align=center;fontColor=#444;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1090" width="1300" height="36" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

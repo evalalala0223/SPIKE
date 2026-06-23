@@ -741,6 +741,15 @@ class StardewInformationGatheringPostprocessProvider(BaseProvider):
             elif previous_surroundings:
                 description = previous_surroundings
 
+        # Surface visually-identified interactive objects (ladders, ore nodes,
+        # stones, shafts, doors, NPCs, ...) into the description so the planner
+        # can use them, since `key_objects` is a separate parsed field otherwise
+        # dropped downstream.
+        key_objects = str(response.get('key_objects') or "").strip()
+        if key_objects and key_objects.lower() not in ("null", "none", ""):
+            if "key objects" not in description.lower():
+                description = f"{description}\n\nKey objects visible on screen:\n{key_objects}".strip()
+
         raw_surroundings = response.get('surroundings', "")
         if raw_surroundings in (None, "", []) and _looks_like_surroundings_text(description):
             raw_surroundings = description

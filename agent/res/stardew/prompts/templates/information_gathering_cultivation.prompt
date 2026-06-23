@@ -5,7 +5,9 @@ Assume you are a helpful AI assistant integrated with 'Stardew Valley' on the PC
 Current task:
 <$task_description$>
 
-Description: Please analyze and describe the screenshot image in a grid-by-grid format and then provide an overall image description. Pay attention to anything related to the task. The image is divided into a 3x5 grid, each cell having its own coordinates. For each grid cell, describe the contents in detail, focusing on any critical icons, or objects present in that particular segment. If there are specific features such as characters or text, mention these as well. After completing the description for one cell, proceed to the next, for example, 'In grid (1,1), [description]. In grid (1,2), [description].' and so on until the entire image is covered.
+Description: Please analyze and describe the screenshot image in a grid-by-grid format and then provide an overall image description. Pay attention to anything related to the task. The image is divided into a 3x5 grid, each cell having its own coordinates. For each grid cell, describe the contents in detail, focusing on any critical icons, or objects present in that particular segment. If there are specific features such as characters or text, mention these as well. Explicitly call out any interactive or task-relevant objects you can see, especially: ladders or staircases going down, mine shafts / holes / elevators, ore nodes (e.g. copper, iron, gold), breakable rocks/stones, chests, shop counters, crafting stations, doors and map exits, NPCs, and the player character. After completing the description for one cell, proceed to the next, for example, 'In grid (1,1), [description]. In grid (1,2), [description].' and so on until the entire image is covered.
+
+Key_objects: List every interactive or task-relevant object you can identify in the screenshot together with the grid cell where it appears, one per line, in the form '<object name> at grid (row, col)'. Pay special attention to ladders/staircases leading down, mine shafts/holes/elevators, ore nodes, breakable rocks/stones, chests, shop counters, crafting stations, doors, map exits, and NPCs. If the player is standing on or directly next to such an object, say so. If no such objects are visible, only output "null".
 
 Date_time: The date and time information in the game are shown on the upper-right of the screenshot, in grid (1, 5). An example of the date and time information is "Wed 10, 5:10 pm".
 
@@ -24,6 +26,9 @@ In grid (1,2), ...
 ...
 In grid (3,5), ... 
 Overall, the image shows...
+Key_objects:
+<object name> at grid (row, col)
+...
 Date_time:
 Date and time information
 Energy:

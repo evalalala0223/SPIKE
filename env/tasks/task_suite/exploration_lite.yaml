@@ -85,7 +85,7 @@ go_to_the_mines_2nd_floor:
   quantity: 1
   tool: null
   save: save_new
-  init_commands: null
+  init_commands: ['warp("Mine")']
   evaluator: location
   difficulty: medium
 

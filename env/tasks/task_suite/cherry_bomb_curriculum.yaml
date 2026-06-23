@@ -1,0 +1,98 @@
+# =============================================================================
+# Cherry Bomb 课程学习任务套件 (Curriculum for craft_1_cherry_bomb)
+# -----------------------------------------------------------------------------
+# 目标任务: craft_1_cherry_bomb  (配方: 4x Copper Ore + 1x Coal, 合成菜单制作)
+#
+# 设计原则: 脚手架递减式课程 (scaffolding decay)。
+#   - 先用 init_commands 把"材料/位置"全部喂好, 只训练单一原子技能;
+#   - 随阶段推进逐步撤掉脚手架 (warp 越来越靠前/发放材料越来越少);
+#   - 最终回到无辅助的原始任务 craft_1_cherry_bomb。
+#
+# 难度统计 -> easy: 2, medium: 4, hard: 1, total: 7
+# 推荐训练顺序按 id 递增即为课程顺序。
+# =============================================================================
+
+# ----- 阶段 S1: 仅训练"合成菜单操作"(终端技能) --------------------------------
+# 全部材料直接发放, agent 只需打开 crafting 菜单并合成 Cherry Bomb。
+craft_1_cherry_bomb_with_materials:
+  id: 0
+  object: Cherry Bomb
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['add_item_by_name("Copper Ore", 4)', 'add_item_by_name("Coal")']
+  evaluator: craft
+  difficulty: easy
+
+# ----- 阶段 S2a: 训练"中程导航"------------------------------------------------
+# 从农场出发抵达山区 (矿洞入口所在地图), 不涉及采集与合成。
+go_to_mountain:
+  id: 1
+  object: Mountain
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['set_time(time=900)']
+  evaluator: location
+  difficulty: easy
+
+# ----- 阶段 S2b: 训练"进入矿洞"------------------------------------------------
+# 起步即 warp 到山区, 只需走到并进入矿洞 (Mine, level 0)。
+go_to_the_mines:
+  id: 2
+  object: Mine
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['warp("Mountain")', 'set_time(time=900)']
+  evaluator: location
+  difficulty: medium
+
+# ----- 阶段 S3a: 训练"采集铜矿"------------------------------------------------
+# 直接 warp 到矿洞 2 层 (铜矿层), 用镐采满 4 个 Copper Ore。
+mine_4_copper_ore_with_pickaxe:
+  id: 3
+  object: Copper Ore
+  quantity: 4
+  tool: Pickaxe
+  save: save_new
+  init_commands: ['warp_mine(2)']
+  evaluator: harvest
+  difficulty: medium
+
+# ----- 阶段 S3b: 训练"采集煤"--------------------------------------------------
+# 直接 warp 到矿洞 1 层, 用镐采集 1 个 Coal。
+mine_1_coal_with_pickaxe:
+  id: 4
+  object: Coal
+  quantity: 1
+  tool: Pickaxe
+  save: save_new
+  init_commands: ['warp_mine(1)']
+  evaluator: harvest
+  difficulty: medium
+
+# ----- 阶段 S4: 组合技能"采集 + 合成"(部分脚手架) -----------------------------
+# 起步即在矿洞 2 层, 预先发放 1 个 Coal; agent 需自行采满 4 个铜矿再合成。
+craft_1_cherry_bomb_in_mine_with_coal:
+  id: 5
+  object: Cherry Bomb
+  quantity: 1
+  tool: Pickaxe
+  save: save_new
+  init_commands: ['warp_mine(2)', 'add_item_by_name("Coal")']
+  evaluator: craft
+  difficulty: medium
+
+# ----- 阶段 S5: 完整目标任务 (无脚手架) ---------------------------------------
+# 与原始 crafting_lite / crafting 中的 craft_1_cherry_bomb 一致:
+# 从农场空手开始, 需完成 导航->采矿(铜+煤)->合成 的完整长链。
+craft_1_cherry_bomb:
+  id: 6
+  object: Cherry Bomb
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['set_time(time=900)']
+  evaluator: craft
+  difficulty: hard

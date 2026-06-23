@@ -1,0 +1,36 @@
+# Dual-brain OFF baseline (single big-brain pipeline).
+# Used by run_dual_brain_ablation.py via STARDOJO_ENHANCED_CONFIG.
+features:
+  use_langchain: false
+  use_langgraph: true
+  use_mem0: false
+  use_dual_brain: false
+  use_mcp: false
+
+dual_brain:
+  enabled: false
+
+mem0:
+  enabled: false
+
+sa_kg:
+  enabled: false
+
+performance:
+  llm_endpoint_throttle:
+    enabled: false
+    max_concurrency: 1
+    model_name_substrings:
+      - qwen
+    slot_dir: cache/locks/llm_endpoint_slots
+    timeout_s: 180
+  streaming:
+    enabled: false
+  video:
+    record_only_when_focused: true
+
+logging:
+  enhanced_features: true
+  gating_decisions: true
+  memory_debug: false
+  performance_metrics: true

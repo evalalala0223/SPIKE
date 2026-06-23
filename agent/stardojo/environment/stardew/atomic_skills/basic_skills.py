@@ -342,17 +342,43 @@ def select_tool(key):
     raise ValueError("Invalid key in select_tool. Key must be in the range [0-9,-,+]")
 
 
-#@register_skill("navigate")
-#def navigate(name):
-#     """
-#     Navigate to a certain location. Call template: navigate(name = ...)
-#     For example:
-#         - call navigate("farm") to navigate to farm
-#
-#     Parameters:
-#      - name: The name of the location to navigate to.
-#     """
-#     actionproxy.navigate(name)
+@register_skill("navigate")
+def navigate(name):
+    """
+    Navigate to a certain location by walking to the warp point that leads there.
+    Uses the game's built-in A* pathfinding to walk the character automatically.
+    Call template: navigate(name = ...)
+    For example:
+        - call navigate("BusStop") to navigate to Bus Stop
+        - call navigate("Town") to navigate to Town
+        - call navigate("Mountain") to navigate to Mountain
+        - call navigate("Mine") to navigate to Mine
+
+    Parameters:
+     - name: The name of the target location to navigate to. Must be a location directly reachable from the current map via a warp point.
+    """
+    _require_actionproxy()
+    return actionproxy.navigate(name)
+
+
+@register_skill("descend_mine")
+def descend_mine():
+    """
+    Descend one floor deeper into the mine. Use this when you are inside the
+    Mine and need to go down to a lower floor (for example to find ore, or to
+    reach a target floor). It walks the character to the nearest visible
+    down-ladder or shaft on the current floor and goes down automatically.
+    Call template: descend_mine()
+
+    Notes:
+     - Only works while you are inside the Mine (a mine floor).
+     - If no ladder is visible yet on the current floor, it may be hidden under
+       rocks: break rocks with your pickaxe (use(direction=...)) to expose the
+       ladder, then call descend_mine() again.
+     - To go down several floors, call descend_mine() once per floor.
+    """
+    _require_actionproxy()
+    return actionproxy.descend_mine()
 
 
 
@@ -367,6 +393,7 @@ __all__ = [
     "attach_item",
     "unattach_item",
     "menu",
-    #"navigate"
+    "navigate",
+    "descend_mine",
 ]
 

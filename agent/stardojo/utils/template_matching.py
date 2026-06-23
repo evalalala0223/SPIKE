@@ -50,8 +50,54 @@ def timing(func):
 
 # @timing
 def get_mtm_match(image: np.ndarray, template: np.ndarray, scales: list):
-    detection = matchTemplates([('', cv2.resize(template, (0, 0), fx=s, fy=s)) for s in scales], image, N_object=1, method=cv2.TM_CCOEFF_NORMED, maxOverlap=0.1)
-    detection['TemplateName'] = [str(round(i, 3)) for i in detection['Score']]  # confidence as name for display
+    # Empty/zero-confidence detection used when no usable scale exists or MTM
+    # raises. Downstream code indexes detection['BBox']/['Score'][0], so we must
+    # always return at least one entry.
+    _empty_detection = {"TemplateName": ["0.0"], "BBox": [(0, 0, 0, 0)], "Score": [0.0]}
+
+    img_h, img_w = image.shape[:2]
+
+    # MTM >= 2.0 requires each template in the list to have a UNIQUE, non-empty
+    # name (it raises "Template '' at index 0 ..." for empty/duplicate names),
+    # and it rejects templates that are LARGER than the source image
+    # ("Template 's0' ... is larger than image."). MTM 1.x tolerated both.
+    # Build a unique-named list and drop scales whose resized template exceeds
+    # the image dimensions.
+    list_templates = []
+    for idx, s in enumerate(scales):
+        resized = cv2.resize(template, (0, 0), fx=s, fy=s)
+        th, tw = resized.shape[:2]
+        if th > img_h or tw > img_w:
+            continue
+        list_templates.append((f"s{idx}", resized))
+
+    if not list_templates:
+        return _empty_detection
+
+    try:
+        detection = matchTemplates(list_templates, image, N_object=1, method=cv2.TM_CCOEFF_NORMED, maxOverlap=0.1)
+    except Exception as e:
+        # Never let a toolbar template-matching failure discard the whole
+        # visual observation; degrade gracefully to a zero-confidence result.
+        logger.warn(f"[template_matching] matchTemplates failed, returning empty detection: {e}")
+        return _empty_detection
+
+    # MTM >= 2.0 returns a List[Tuple[label, bbox, score]] instead of the
+    # pandas DataFrame returned by MTM 1.x. Normalize both into a dict-of-lists
+    # (keys: TemplateName / BBox / Score) so downstream code stays unchanged.
+    if isinstance(detection, list):
+        if not detection:
+            return _empty_detection
+        bboxes = [hit[1] for hit in detection]
+        scores = [hit[2] for hit in detection]
+        detection = {
+            "TemplateName": [str(round(s, 3)) for s in scores],  # confidence as name for display
+            "BBox": bboxes,
+            "Score": scores,
+        }
+    else:
+        # Legacy DataFrame path (MTM 1.x)
+        detection['TemplateName'] = [str(round(i, 3)) for i in detection['Score']]  # confidence as name for display
     return detection
 
 

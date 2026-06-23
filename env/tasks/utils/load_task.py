@@ -38,8 +38,10 @@ def load_task(type: str, id: int) -> base.TaskBase:
         task = exploration.Exploration(llm_description, object, quantity, tool, save, init_commands, evaluator, difficulty)
     elif type == "social" or type == "social_lite":
         task = social.Social(llm_description, object, quantity, tool, save, init_commands, evaluator, difficulty)
-    elif type == "crafting" or type == "crafting_lite":
+    elif type == "crafting" or type == "crafting_lite" or type == "crafting_mirror":
         task = crafting.Crafting(llm_description, object, quantity, tool, save, init_commands, evaluator, difficulty)
+    elif type == "exploration_mirror":
+        task = exploration.Exploration(llm_description, object, quantity, tool, save, init_commands, evaluator, difficulty)
     elif type == "combat" or type == "combat_lite" or type == "combating_lite":
         task = combat.Combat(llm_description, object, quantity, tool, save, init_commands, evaluator, difficulty)
     elif type == "open":

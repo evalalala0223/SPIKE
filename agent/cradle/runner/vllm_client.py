@@ -183,6 +183,14 @@ class VLLMClient:
         base_url = conf.get("base_url") or "https://dashscope.aliyuncs.com/compatible-mode/v1"
         model = model_override or conf.get("comp_model", "qwen-plus")
 
+        # Allow overriding max_tokens via config. Gemini 2.5 flash consumes
+        # internal reasoning tokens even with thinking disabled, so the default
+        # 300 can truncate the visible ACTION line. Default higher when unset.
+        try:
+            max_tokens = int(conf.get("fastllm_max_tokens") or conf.get("max_tokens") or 800)
+        except (TypeError, ValueError):
+            max_tokens = 800
+
         if secondary_key and isinstance(secondary_key, str) and secondary_key.strip():
             logger.write(
                 "[FastLLM] Dual-key load distribution enabled "
@@ -194,6 +202,7 @@ class VLLMClient:
             model=model,
             api_key=api_key,
             secondary_api_key=secondary_key,
+            max_tokens=max_tokens,
         )
 
     def _iter_available_keys(self) -> List[tuple[str, str]]:
@@ -5306,6 +5315,19 @@ class VLLMClient:
             )
 
         if suggested_action.startswith("move(") and not action.startswith("move("):
+            # navigate(...) is a legitimate high-level pathfinding skill. Allow it
+            # to override a raw BigBrain move suggestion instead of reverting it,
+            # since it walks the character to a named warp/exit using A* pathing.
+            if action.startswith("navigate("):
+                logger.write(
+                    "[FastLLM] Allowing navigate override of BigBrain move: "
+                    f"{action} (was: {suggested_action})"
+                )
+                return VLLMDecision(
+                    action=action,
+                    reason="navigate_override_move",
+                    escalate=False,
+                )
             suggested_move = cls._parse_move_components(suggested_action)
             if suggested_move == (0, 0):
                 grounded_local_recovery = cls._build_invalidated_suggestion_local_recovery(
@@ -7375,11 +7397,27 @@ class VLLMClient:
             return ""
 
         if not re.match(
-            r"^(move|use|interact|choose_item|attach_item|unattach_item|craft|choose_option|menu|nop)\b",
+            r"^(move|use|interact|choose_item|attach_item|unattach_item|craft|choose_option|menu|navigate|descend_mine|nop)\b",
             text,
             re.IGNORECASE,
         ):
             return ""
+
+        navigate_named = re.match(
+            r"^navigate\(\s*name\s*=\s*[\"']([A-Za-z0-9_ ]+)[\"']\s*\)$",
+            text,
+            re.IGNORECASE,
+        )
+        if navigate_named:
+            return f'navigate(name="{navigate_named.group(1).strip()}")'
+
+        navigate_positional = re.match(
+            r"^navigate\(\s*[\"']([A-Za-z0-9_ ]+)[\"']\s*\)$",
+            text,
+            re.IGNORECASE,
+        )
+        if navigate_positional:
+            return f'navigate(name="{navigate_positional.group(1).strip()}")'
 
         move_named = re.match(
             r"^move\(\s*x\s*=\s*(-?\d+)\s*,\s*y\s*=\s*(-?\d+)\s*\)$",
@@ -7438,7 +7476,7 @@ class VLLMClient:
             return f"{skill}(slot_index={slot_index})"
 
         bare_call = re.match(
-            r"^(unattach_item|nop)\(\s*\)",
+            r"^(unattach_item|nop|descend_mine)\(\s*\)",
             text,
             re.IGNORECASE,
         )
@@ -7573,7 +7611,8 @@ class VLLMClient:
             r"move\(\s*(?:x\s*=\s*-?\d+\s*,\s*y\s*=\s*-?\d+|-?\d+\s*,\s*-?\d+)\s*\)",
             r"(?:use|interact)\(\s*(?:direction\s*=\s*[\"']?(?:up|down|left|right)[\"']?|up|down|left|right)\s*\)",
             r"(?:choose_item|attach_item)\(\s*(?:slot_index\s*=\s*-?\d+|-?\d+)\s*\)",
-            r"(?:unattach_item|nop)\(\s*\)",
+            r"(?:unattach_item|nop|descend_mine)\(\s*\)",
+            r"navigate\(\s*(?:name\s*=\s*)?[\"'][A-Za-z0-9_ ]+[\"']\s*\)",
             r"(?:craft|choose_option|menu)\([^)\n\r`]*\)",
         )
         combined = re.compile(

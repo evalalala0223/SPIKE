@@ -1,7 +1,7 @@
 features:
   use_langchain: false
   use_langgraph: true
-  use_mem0: false
+  use_mem0: true
   use_dual_brain: true
   use_mcp: false
 

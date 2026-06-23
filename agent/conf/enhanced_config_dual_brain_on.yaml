@@ -1,0 +1,84 @@
+# Dual-brain ON: Big Brain + Little Brain + SA-KG + Mem0 quick path.
+# Used by run_dual_brain_ablation.py via STARDOJO_ENHANCED_CONFIG.
+#
+# IMPORTANT: 代码在判定开关时需要 features.use_* AND <section>.enabled 同时为 true，
+# 缺一不可。SA-KG 是 Big Brain 的证据库，Mem0 是 Little Brain 的快路径。
+features:
+  use_langchain: false
+  use_langgraph: true
+  use_mem0: true
+  use_dual_brain: true
+  use_mcp: false
+
+dual_brain:
+  enabled: true
+  little_brain:
+    enabled: true
+    retrieval_first: true
+    fallback_to_llm: true
+    max_latency_ms: 500
+    use_stardew_template: false
+  big_brain:
+    enabled: true
+    gating:
+      trigger_on_consecutive_failures: 3
+      trigger_on_low_confidence: 0.5
+      trigger_on_new_environment: true
+      trigger_on_explicit_request: true
+    throttle:
+      enabled: false
+      scope: heavy_nodes
+      poll_interval_s: 0.5
+      stale_after_s: 300
+
+mem0:
+  enabled: true
+  storage_path: null            # 由 runner 在 work_dir 下自动落 mem0_records.json
+  quick_path_threshold: 0.85
+  quick_path_execute_threshold: 0.92
+  quick_path_max_consecutive_hits: 2
+  quick_path_repeat_action_limit: 2
+  quick_path_max_retry_for_execute: 0
+  quick_path_disable_without_embedding: true
+  no_progress_repeat_action_limit: 3
+  max_results: 3
+  store_require_meaningful_progress: true
+  store_progress_min_chars: 8
+  store_require_reflection_success: false
+
+sa_kg:
+  enabled: true
+  embedding:
+    provider: local
+    model: BAAI/bge-base-en-v1.5
+    dim: 768
+  retrieval:
+    similarity_threshold: 0.85
+    top_k: 5
+    as_reference_only: true
+  storage:
+    backend: chromadb
+    persistence_path: ./cache/sa_kg/
+    max_entries: 10000
+  write_conditions:
+    require_reflection_success: true
+    min_confidence: 0.7
+
+performance:
+  llm_endpoint_throttle:
+    enabled: false
+    max_concurrency: 1
+    model_name_substrings:
+      - qwen
+    slot_dir: cache/locks/llm_endpoint_slots
+    timeout_s: 180
+  streaming:
+    enabled: false
+  video:
+    record_only_when_focused: true
+
+logging:
+  enhanced_features: true
+  gating_decisions: true
+  memory_debug: true
+  performance_metrics: true

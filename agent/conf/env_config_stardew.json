@@ -24,7 +24,8 @@
             "craft",
             "choose_option",
             "menu",
-            "navigate"
+            "navigate",
+            "descend_mine"
         ],
         "skill_names_movement": [],
         "skill_names_map": [],

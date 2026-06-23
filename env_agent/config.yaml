@@ -1,0 +1,41 @@
+# env_agent configuration
+# Paths are resolved relative to the SPIKE repo root unless absolute.
+
+# --- LLM (reuses SPIKE's existing proxy config) ---
+llm:
+  # a SPIKE-style json config with keys: comp_model, base_url, key_var
+  config: "agent/conf/gemini_config.json"
+  # .env file that may hold the api key (key name = key_var in the json above)
+  dotenv: "env/.env"
+  temperature: 0.4
+
+# --- task pool (read-only source of truth) ---
+task_pool:
+  suite_dir: "env/tasks/task_suite"
+
+# --- knowledge base ---
+knowledge_base:
+  cache_dir: "env_agent/knowledge/wiki_cache"
+  # set true to allow web-search fallback (requires a search backend wired in)
+  enable_web_fallback: false
+
+# --- experience / pitfalls ---
+experience:
+  results_dir: "runs/results"
+  pitfalls_file: "env_agent/knowledge/agent_pitfalls.md"
+  limit_runs: null        # null = scan all; or an int to cap
+  top_n: 20
+
+# --- decomposition ---
+decompose:
+  num_tasks: 6
+
+# --- output ---
+output:
+  # generated sub-task suites are written here (NOT mixed into benchmark suites)
+  generated_dir: "env_agent/generated"
+  events_dir: "env_agent/runs"
+
+# --- tooling backend: "native" (default) or "openhands" ---
+tools:
+  backend: "native"

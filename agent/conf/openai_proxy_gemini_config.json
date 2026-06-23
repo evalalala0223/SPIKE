@@ -1,0 +1,9 @@
+{
+  "key_var": "GEMINI_KEY",
+  "emb_model": "BAAI/bge-base-en-v1.5",
+  "comp_model": "gemini/gemini-3.1-pro-preview",
+  "is_azure": false,
+  "base_url": "http://9.135.226.243:4000/v1",
+  "emb_fallback_dim": 768,
+  "image_emb_fallback_dim": 1024
+}

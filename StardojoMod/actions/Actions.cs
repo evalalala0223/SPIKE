@@ -2898,6 +2898,131 @@ namespace ActionSpace.actions
             public bool? placeable { get; set; }
         }
 
+        // Mine ore nodes all share the generic BaseName "Stone"; they are only
+        // distinguishable by their item index. Map the common node indices to a
+        // descriptive name so the agent can target the right node to mine
+        // ore/coal/gems instead of seeing an undifferentiated "Stone".
+        private static string? DescribeMineNode(StardewValley.Object obj)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+            switch (obj.ParentSheetIndex)
+            {
+                case 751: case 849: return "Copper Ore node";
+                case 290: case 850: return "Iron Ore node";
+                case 764: return "Gold Ore node";
+                case 765: return "Iridium Ore node";
+                case 95:  return "Radioactive Ore node";
+                case 2:   return "Diamond node";
+                case 4:   return "Ruby node";
+                case 6:   return "Jade node";
+                case 8:   return "Amethyst node";
+                case 10:  return "Topaz node";
+                case 12:  return "Emerald node";
+                case 14:  return "Aquamarine node";
+                case 44:  return "Gem node";
+                case 46:  return "Mystic Stone node";
+                case 75:  return "Geode node";
+                case 76:  return "Frozen Geode node";
+                case 77:  return "Magma Geode node";
+                case 819: return "Omni Geode node";
+                default:  return null;
+            }
+        }
+
+        // ---- Mine "hidden ladder" hint support -------------------------------
+        // When a mine floor has no exposed down-ladder yet, we mark one nearby
+        // stone as hiding the ladder. When the agent breaks that stone, the
+        // OnUpdateTicked handler forces a down-ladder to spawn there. This gives
+        // the agent a concrete, breakable target instead of mining blindly.
+        public static Vector2? LadderHintStone = null;
+        public static int LadderHintLevel = -999;
+
+        private static bool HasVisibleDownLadder(MineShaft shaft)
+        {
+            var layer = shaft.Map?.GetLayer("Buildings");
+            if (layer == null) return false;
+            for (int ty = 0; ty < layer.LayerHeight; ty++)
+            {
+                for (int tx = 0; tx < layer.LayerWidth; tx++)
+                {
+                    var t = layer.Tiles[tx, ty];
+                    if (t != null && (t.TileIndex == 173 || t.TileIndex == 174))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static Vector2? PickNearestStone(MineShaft shaft)
+        {
+            int px = Game1.player.TilePoint.X;
+            int py = Game1.player.TilePoint.Y;
+            Vector2? best = null;
+            double bestD = double.MaxValue;
+            foreach (var kv in shaft.objects.Pairs)
+            {
+                var obj = kv.Value;
+                if (obj == null || obj.Name != "Stone") continue;
+                double d = Math.Pow(kv.Key.X - px, 2) + Math.Pow(kv.Key.Y - py, 2);
+                if (d < bestD) { bestD = d; best = kv.Key; }
+            }
+            return best;
+        }
+
+        // Called once per observation (start of GetSurroundings): make sure a
+        // hint stone is selected when the current mine floor has no visible
+        // down-ladder yet.
+        public static void EnsureLadderHint()
+        {
+            if (Game1.currentLocation is not MineShaft shaft)
+            {
+                LadderHintStone = null;
+                LadderHintLevel = -999;
+                return;
+            }
+            if (HasVisibleDownLadder(shaft))
+            {
+                LadderHintStone = null;
+                LadderHintLevel = shaft.mineLevel;
+                return;
+            }
+            bool needPick = LadderHintLevel != shaft.mineLevel
+                || LadderHintStone == null
+                || !shaft.objects.ContainsKey(LadderHintStone.Value);
+            if (needPick)
+            {
+                LadderHintStone = PickNearestStone(shaft);
+                LadderHintLevel = shaft.mineLevel;
+            }
+        }
+
+        // Called from OnUpdateTicked: once the hinted stone has been broken,
+        // force a real down-ladder to spawn there so the agent can descend.
+        public static void MaybeRevealLadder(Mod mod)
+        {
+            if (Game1.currentLocation is not MineShaft shaft) return;
+            if (LadderHintStone == null || LadderHintLevel != shaft.mineLevel) return;
+            if (shaft.objects.ContainsKey(LadderHintStone.Value)) return; // stone still present
+            if (HasVisibleDownLadder(shaft)) { LadderHintStone = null; return; }
+            try
+            {
+                shaft.createLadderDown((int)LadderHintStone.Value.X, (int)LadderHintStone.Value.Y);
+                mod.Monitor.Log(
+                    $"[LadderHint] revealed down-ladder at {LadderHintStone.Value} on mine level {shaft.mineLevel}.",
+                    LogLevel.Info);
+            }
+            catch (Exception ex)
+            {
+                mod.Monitor.Log($"[LadderHint] createLadderDown failed: {ex.Message}", LogLevel.Warn);
+            }
+            LadderHintStone = null;
+        }
+
         public static TileInfo GetTileInfo(string x, string y)
         {
             int xI = int.Parse(x);
@@ -2933,7 +3058,14 @@ namespace ActionSpace.actions
             }
             if (Game1.currentLocation.objects.ContainsKey(key))
             {
-                object_info = Game1.currentLocation.objects[key].BaseName;
+                var tileObject = Game1.currentLocation.objects[key];
+                object_info = tileObject.BaseName;
+                // Disambiguate mine ore/gem nodes (all share BaseName "Stone").
+                string? oreNodeName = DescribeMineNode(tileObject);
+                if (oreNodeName != null)
+                {
+                    object_info = oreNodeName;
+                }
             }
             if (Game1.currentLocation.terrainFeatures.ContainsKey(key))
             {
@@ -3053,6 +3185,56 @@ namespace ActionSpace.actions
                 }
             }
 
+            // Mine ladders / shafts are dynamic tiles on the Buildings layer
+            // (173 = ladder down, 174 = shaft/hole down, 115 = ladder up). They
+            // are NOT warps, so they never appear in exit_info above. Surface
+            // them explicitly so the agent can see and descend via descend_mine().
+            if (Game1.currentLocation is MineShaft)
+            {
+                try
+                {
+                    var buildingTile = Game1.currentLocation.Map?.GetLayer("Buildings")?.Tiles[xI, yI];
+                    if (buildingTile != null)
+                    {
+                        if (buildingTile.TileIndex == 173)
+                        {
+                            object_info = "Ladder Down";
+                            if (string.IsNullOrWhiteSpace(exit_info))
+                            {
+                                exit_info = "Ladder Down (call descend_mine to go down)";
+                            }
+                        }
+                        else if (buildingTile.TileIndex == 174)
+                        {
+                            object_info = "Shaft Down";
+                            if (string.IsNullOrWhiteSpace(exit_info))
+                            {
+                                exit_info = "Shaft Down (call descend_mine to go down)";
+                            }
+                        }
+                        else if (buildingTile.TileIndex == 115)
+                        {
+                            object_info = "Ladder Up";
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Out-of-bounds tile lookups on irregular mine maps are safe to ignore.
+                }
+            }
+
+            // If this stone is the hinted "ladder underneath" stone, tell the
+            // agent explicitly so it knows which stone to break to reveal the
+            // down-ladder.
+            if (LadderHintStone.HasValue
+                && (int)LadderHintStone.Value.X == xI
+                && (int)LadderHintStone.Value.Y == yI
+                && Game1.currentLocation is MineShaft)
+            {
+                object_info = "Stone (mine ladder hidden underneath - break this stone with the Pickaxe to reveal the down-ladder)";
+            }
+
             var tile_info = new TileInfo
             {
                 position = position,
@@ -3073,6 +3255,7 @@ namespace ActionSpace.actions
 
         public static List<TileInfo> GetSurroundings(int size)
         {
+            EnsureLadderHint();
             var playPoint = Game1.player.TilePoint;
             int xI = playPoint.X;
             int yI = playPoint.Y;

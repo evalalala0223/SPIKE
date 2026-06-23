@@ -1,6 +1,7 @@
 ﻿using System;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using Microsoft.Xna.Framework;
 using StardewValley.Menus;
 using System.Text;
@@ -384,6 +385,117 @@ namespace ActionSpace.actions
                     }
                 }
             }
+            return false;
+        }
+
+        // Descend one floor in the mine. Ladders/shafts inside a MineShaft are
+        // dynamically generated tiles (NOT warp points), so navigate() can never
+        // reach them. This finds the nearest visible down-ladder (tile index 173)
+        // or down-shaft / hole (tile index 174) on the current floor, auto-paths
+        // the character onto it (which triggers the game's own descent), and
+        // confirms the floor changed.
+        public static async Task<bool> descend_mine(Mod mod)
+        {
+            if (Game1.activeClickableMenu is not null)
+            {
+                return false;
+            }
+
+            if (Game1.currentLocation is not MineShaft shaft)
+            {
+                // The mine entrance lobby (location Name == "Mine") is NOT a
+                // MineShaft, but its ladder leads down to UndergroundMine1.
+                // Descend into the mine the same way stepping on that ladder does.
+                if (Game1.currentLocation?.Name == "Mine")
+                {
+                    LogToFile("descend_mine: in Mine entrance lobby, descending to level 1.", mod);
+                    Game1.enterMine(1, null);
+                    await Task.Delay(800);
+                    bool ok = Game1.currentLocation is MineShaft entered && entered.mineLevel >= 1;
+                    LogToFile($"descend_mine: lobby descent result = {ok}.", mod);
+                    return ok;
+                }
+                LogToFile("descend_mine: player is not currently in a MineShaft.", mod);
+                return false;
+            }
+
+            var buildingsLayer = shaft.Map?.GetLayer("Buildings");
+            if (buildingsLayer == null)
+            {
+                LogToFile("descend_mine: MineShaft has no Buildings layer.", mod);
+                return false;
+            }
+
+            int startLevel = shaft.mineLevel;
+            int px = Game1.player.TilePoint.X;
+            int py = Game1.player.TilePoint.Y;
+
+            // Find the down-ladder / down-shaft tile nearest to the player.
+            Vector2? target = null;
+            double bestDist = double.MaxValue;
+            for (int ty = 0; ty < buildingsLayer.LayerHeight; ty++)
+            {
+                for (int tx = 0; tx < buildingsLayer.LayerWidth; tx++)
+                {
+                    var tile = buildingsLayer.Tiles[tx, ty];
+                    if (tile == null)
+                    {
+                        continue;
+                    }
+                    // 173 = ladder down, 174 = shaft / hole down.
+                    if (tile.TileIndex == 173 || tile.TileIndex == 174)
+                    {
+                        double d = Math.Pow(tx - px, 2) + Math.Pow(ty - py, 2);
+                        if (d < bestDist)
+                        {
+                            bestDist = d;
+                            target = new Vector2(tx, ty);
+                        }
+                    }
+                }
+            }
+
+            if (target == null)
+            {
+                // No ladder is exposed yet on this floor (it may still be hidden
+                // under rocks that have to be broken first). Report failure so the
+                // agent knows it must keep mining/searching rather than retry.
+                LogToFile($"descend_mine: no visible ladder/shaft on mine level {startLevel}.", mod);
+                return false;
+            }
+
+            LogToFile(
+                $"descend_mine: walking to ladder at ({(int)target.Value.X},{(int)target.Value.Y}) "
+                + $"from level {startLevel}.",
+                mod);
+            await move(((int)target.Value.X).ToString(), ((int)target.Value.Y).ToString(), mod);
+
+            // Stepping onto the ladder/shaft tile triggers the game's own descent
+            // (a Warped event + mineLevel change). Give it a moment to resolve.
+            await Task.Delay(600);
+
+            if (Game1.currentLocation is MineShaft afterShaft && afterShaft.mineLevel > startLevel)
+            {
+                LogToFile($"descend_mine: descended from {startLevel} to {afterShaft.mineLevel}.", mod);
+                return true;
+            }
+
+            // Fallback: some ladder tiles are flagged impassable to A*, so the
+            // pathing stops adjacent instead of on top. Trigger the descent the
+            // same way stepping on the ladder would (one floor down).
+            if (Game1.currentLocation is MineShaft stillShaft && stillShaft.mineLevel == startLevel)
+            {
+                LogToFile(
+                    $"descend_mine: pathing did not land on ladder, descending via enterMine({startLevel + 1}).",
+                    mod);
+                Game1.enterMine(startLevel + 1, null);
+                await Task.Delay(600);
+                if (Game1.currentLocation is MineShaft fb && fb.mineLevel > startLevel)
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 

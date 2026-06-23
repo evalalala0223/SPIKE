@@ -303,7 +303,12 @@ namespace observeSpaceTest
 //                var canExit = !usingTool && !isEating && !paused && !usingWeapon && !toolAnimation && !passingOut;
 //                var canExit = !usingTool && !isEating && !paused && !animating && !usingWeapon && !toolAnimation && !passingOut;
 
-                var canExit = !usingTool && !paused && !usingWeapon && !toolAnimation && !passingOut && !fading && Game1.player.controller == null;
+                // mac fix: do NOT include `paused` in canExit. SPIKE's Python side calls
+                // pause_game() before issuing each action, expecting the game clock to stay frozen
+                // while the action executes. Including `paused` here causes a hard deadlock on macOS:
+                // waitForReady awaits inside the UpdateTicked handler, but with paused=true the game
+                // loop barely advances, so paused never flips back to false on its own.
+                var canExit = !usingTool && !usingWeapon && !toolAnimation && !passingOut && !fading && Game1.player.controller == null;
 //                var canExit = !paused && !animating && !passingOut;
                 if (canExit)
                 {
@@ -771,6 +776,7 @@ namespace observeSpaceTest
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
             Actions.updatePixelData(this);
+            try { ActionSpace.actions.Actions.MaybeRevealLadder(this); } catch { }
 
             // Double insurance:
             // 1) TimePassPatch blocks shouldTimePass(), which stops normal clock advance.

@@ -2242,7 +2242,7 @@ class PipelineRunner():
             return f"{slot_positional.group(1).lower()}(slot_index={int(slot_positional.group(2))})"
 
         bare_call = re.match(
-            r"^(unattach_item|nop)\(\s*\)$",
+            r"^(unattach_item|nop|descend_mine)\(\s*\)$",
             action,
             re.IGNORECASE,
         )
@@ -2256,6 +2256,22 @@ class PipelineRunner():
         )
         if passthrough:
             return passthrough.group(0).strip()
+
+        navigate_named = re.match(
+            r"^navigate\(\s*name\s*=\s*[\"']([A-Za-z0-9_ ]+)[\"']\s*\)$",
+            action,
+            re.IGNORECASE,
+        )
+        if navigate_named:
+            return f'navigate(name="{navigate_named.group(1).strip()}")'
+
+        navigate_positional = re.match(
+            r"^navigate\(\s*[\"']([A-Za-z0-9_ ]+)[\"']\s*\)$",
+            action,
+            re.IGNORECASE,
+        )
+        if navigate_positional:
+            return f'navigate(name="{navigate_positional.group(1).strip()}")'
 
         if action.startswith("use_tool("):
             return self._normalize_cortex_action(action.replace("use_tool(", "use(", 1))

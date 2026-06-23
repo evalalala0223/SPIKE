@@ -1,0 +1,69 @@
+# =============================================================================
+# Cherry Bomb 镜像/哨兵任务 —— exploration evaluator 可校验性验证
+# type = exploration_mirror  ->  Exploration 类 (env/tasks/exploration.py)
+# -----------------------------------------------------------------------------
+# 本文件含两类 evaluator, 可校验方式不同:
+#
+# [location] 状态型(绝对): obs.player.location == object 即 current_quantity=1
+#            (exploration.py 第 122-124 行)。
+#   ✅ 可纯 init 通过: 用 warp 把玩家直接传送到目标地点。
+#   注意 warmup: evaluate 首个 tick 仅缓存 last_obs 返回 False (第 59-64 行),
+#               从第 2 个 tick 起判定 -> 无需 agent 动作即自动 completed。
+#
+# [harvest] 增量型(delta): quantity_change = 背包中 object 数量的"相邻帧增量"累加
+#           (第 80-83 / 172-174 行, count_check = max(current-last,0))。
+#   ❌ 无法仅靠 init_commands 通过: init 在首帧前完成, 预发放物品已计入 last_obs,
+#      后续帧 delta=0 永不累加; 且预发放不抵扣 quantity。
+#   ⚠️ 故 harvest 只能做成"最小动作哨兵": quantity=1 + warp 到资源相邻矿层,
+#      需恰好 1 次采集动作来验证 delta 计数链路 (非 0 动作通过)。
+#
+# id 必须与文件内出现顺序一致 (load_task.py 第 24 行按位置索引)。
+# =============================================================================
+
+# ---- location 镜像: 可纯 init 通过 (0 agent 动作) ----------------------------
+
+# 镜像: go_to_mountain —— 直接 warp 到 Mountain, location==Mountain 自动通过
+mirror_go_to_mountain:
+  id: 0
+  object: Mountain
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['warp("Mountain")']
+  evaluator: location
+  difficulty: easy
+
+# 镜像: go_to_the_mines —— 直接 warp 到矿洞入口大厅 (GameLocation.Name == "Mine")
+mirror_go_to_the_mines:
+  id: 1
+  object: Mine
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['warp("Mine")']
+  evaluator: location
+  difficulty: easy
+
+# ---- harvest 哨兵: 无法纯 init 通过, 需恰好 1 次采集动作 ----------------------
+
+# 哨兵: mine_4_copper_ore 的最小化版本 (quantity 4 -> 1, warp 到铜矿层 2)
+sentinel_mine_1_copper_ore_with_pickaxe:
+  id: 2
+  object: Copper Ore
+  quantity: 1
+  tool: Pickaxe
+  save: save_new
+  init_commands: ['warp_mine(2)']
+  evaluator: harvest
+  difficulty: easy
+
+# 哨兵: mine_1_coal 的同款最小化版本 (warp 到矿层 1)
+sentinel_mine_1_coal_with_pickaxe:
+  id: 3
+  object: Coal
+  quantity: 1
+  tool: Pickaxe
+  save: save_new
+  init_commands: ['warp_mine(1)']
+  evaluator: harvest
+  difficulty: easy

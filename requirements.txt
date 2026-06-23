@@ -27,3 +27,32 @@ tiktoken==0.8.0
 torch==2.5.1
 torchvision==0.20.1
 tqdm==4.67.0
+
+# --- Core dependencies imported unconditionally but missing above ---
+colorama                 # cradle/stardojo config & logger
+anthropic                # cradle/stardojo provider/llm/claude.py
+langchain-core           # cradle provider/langchain/langchain_provider.py
+langchain-openai         # cradle provider/langchain/langchain_provider.py
+langchain-anthropic      # cradle provider/langchain/langchain_provider.py
+openpyxl                 # env/tasks/utils/transform.py (xlsx I/O)
+cloudpickle              # env/llm_env_multi_tasks_parallel.py (parallel pickling)
+
+# --- Game-mod IPC serialization (env/actions.py) ---
+cbor                     # import cbor
+msgpack                  # import msgpack
+
+# --- Vision / perception stack (Cradle utils & video providers; loaded on demand) ---
+scipy                    # cradle/stardojo utils/image_utils.py
+supervision              # cradle/stardojo utils/image_utils.py
+Multi-Template-Matching  # import MTM (template_matching / icon_utils)
+spacy                    # cradle/stardojo provider/video/video_recorder.py
+easyocr                  # cradle/stardojo provider/video/video_ocr_extractor.py
+chromadb                 # cradle/memory/sa_kg.py (SAKG vector store; optional but recommended)
+
+# --- Platform-specific (auto-selected by your OS) ---
+pywin32; sys_platform == "win32"                  # win32gui/win32process/win32con GUI control
+pyobjc-framework-Quartz; sys_platform == "darwin" # import Quartz (macOS window detection)
+
+# --- Special-source dependencies (NOT pip-installable directly; install per StarDojo/Cradle docs) ---
+# segment-anything   -> import segment_anything  (e.g. pip install git+https://github.com/facebookresearch/segment-anything.git)
+# groundingdino      -> import groundingdino      (build from https://github.com/IDEA-Research/GroundingDINO)

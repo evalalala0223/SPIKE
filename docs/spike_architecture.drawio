@@ -1,0 +1,107 @@
+<mxfile host="65bd71144e">
+    <diagram id="spike-arch" name="SPIKE Framework">
+        <mxGraphModel dx="541" dy="651" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="SPIKE: Event-Triggered Dual-Controller Framework" style="text;strokeColor=none;fillColor=none;fontSize=22;fontStyle=1;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="30" width="760" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="subtitle" value="Long-horizon game agent with cost-aware reasoning allocation" style="text;strokeColor=none;fillColor=none;fontSize=13;fontStyle=2;align=center;fontColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="68" width="760" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="env" value="&lt;b&gt;Environment&lt;/b&gt;&lt;br&gt;Stardew Valley&lt;br&gt;screenshot + state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="180" width="160" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="trigger" value="&lt;b&gt;Event Trigger&lt;/b&gt;&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;visual change&lt;br&gt;progress / repetition&lt;br&gt;failure&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="160" width="200" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="big_brain" value="&lt;b&gt;Strategic Controller&lt;/b&gt;&lt;br&gt;&lt;i&gt;Big Brain (slow)&lt;/i&gt;&lt;br&gt;&lt;br&gt;info gather → reflect&lt;br&gt;→ task reason → plan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="620" y="240" width="220" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="little_brain" value="&lt;b&gt;Reactive Controller&lt;/b&gt;&lt;br&gt;&lt;i&gt;Little Brain (fast)&lt;/i&gt;&lt;br&gt;&lt;br&gt;follow plan + retrieve&lt;br&gt;cache + can override" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="620" y="110" width="220" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="action" value="&lt;b&gt;Action a&lt;sub&gt;t&lt;/sub&gt;&lt;/b&gt;&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;move / use / interact&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="940" y="180" width="180" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="mem_title" value="Hierarchical Memory" style="text;strokeColor=none;fillColor=none;fontSize=14;fontStyle=1;align=center;fontColor=#5f3dc4;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="395" width="520" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="sakg" value="&lt;b&gt;SA-KG&lt;/b&gt;&lt;br&gt;State-Action&lt;br&gt;Knowledge Graph&lt;br&gt;&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;structured, long-term&lt;br&gt;→ for big brain replan&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="430" width="200" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="samb" value="&lt;b&gt;SA-MB&lt;/b&gt;&lt;br&gt;State-Action&lt;br&gt;Memory Bank&lt;br&gt;&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;fast cache, short-term&lt;br&gt;→ for little brain reuse&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="630" y="430" width="200" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_env_trigger" value="obs o&lt;sub&gt;t&lt;/sub&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;" parent="1" source="env" target="trigger" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_trigger_big" value="g&lt;sub&gt;t&lt;/sub&gt;=1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=12;fontStyle=1;strokeColor=#6c8ebf;fontColor=#1864ab;" parent="1" source="trigger" target="big_brain" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="540" y="230"/>
+                            <mxPoint x="540" y="295"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e_trigger_little" value="g&lt;sub&gt;t&lt;/sub&gt;=0 (default)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=12;fontStyle=1;strokeColor=#82b366;fontColor=#2f7c39;" parent="1" source="trigger" target="little_brain" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="540" y="230"/>
+                            <mxPoint x="540" y="165"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e_big_little" value="4-step plan" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;fontSize=11;fontColor=#666;" parent="1" source="big_brain" target="little_brain" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_little_big" value="override / escalate" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;fontSize=11;fontColor=#666;exitX=0;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;" parent="1" source="little_brain" target="big_brain" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_big_action" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" parent="1" source="big_brain" target="action" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_little_action" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" parent="1" source="little_brain" target="action" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_action_env" value="executes" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="action" target="env" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1030" y="300"/>
+                            <mxPoint x="160" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e_sakg_big" value="evidence" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;strokeColor=#9673a6;fontColor=#5f3dc4;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="sakg" target="big_brain" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_samb_little" value="cached action" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=11;strokeColor=#82b366;fontColor=#2f7c39;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="samb" target="little_brain" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="910" y="550" as="sourcePoint"/>
+                        <mxPoint x="870" y="180" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="880" y="500"/>
+                            <mxPoint x="880" y="165"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="inn_title" value="4 Core Innovations" style="text;strokeColor=none;fillColor=none;fontSize=18;fontStyle=1;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="610" width="1200" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="inn1" value="&lt;b&gt;1. Event-Triggered Deliberation&lt;/b&gt;&lt;br&gt;&lt;br&gt;Reason only at event boundaries,&lt;br&gt;not every step.&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;(when to think)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="660" width="280" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="inn2" value="&lt;b&gt;2. Adaptive Dual Controller&lt;/b&gt;&lt;br&gt;&lt;br&gt;Big brain plans + Little brain&lt;br&gt;executes &amp; can override.&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;(who decides)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="660" width="280" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="inn3" value="&lt;b&gt;3. Heterogeneous Memory&lt;/b&gt;&lt;br&gt;&lt;br&gt;SA-KG for replan,&lt;br&gt;SA-MB for routine reuse.&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;(what evidence)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="700" y="660" width="280" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="inn4" value="&lt;b&gt;4. Cost-Aware Allocation&lt;/b&gt;&lt;br&gt;&lt;br&gt;+38.5% SR, -54.9% tokens,&lt;br&gt;-40.8% latency vs CRADLE.&lt;br&gt;&lt;font color=&#39;#666&#39;&gt;(measurable gains)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="1000" y="660" width="280" height="120" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

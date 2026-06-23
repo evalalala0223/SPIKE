@@ -1,0 +1,45 @@
+# =============================================================================
+# Cherry Bomb 镜像/哨兵任务 —— crafting evaluator 可校验性验证
+# type = crafting_mirror  ->  Crafting 类 (env/tasks/crafting.py), evaluator = craft
+# -----------------------------------------------------------------------------
+# craft 评估器为"状态型/绝对值": current_quantity = 背包中 object 的数量,
+#   current_quantity >= quantity 即 completed (crafting.py 第 7-11 行, 无 warmup 帧)。
+# 镜像原理: 在 init_commands 中用 add_item_by_name 直接发放成品 "Cherry Bomb",
+#   首个评估 tick 即返回 completed=True, 从而单独验证 craft 评估器 + 背包观测链路。
+# add_item_by_name 为模糊匹配, 但 "Cherry Bomb" 与物品 Item.Name 一致, 可精确命中。
+#
+# id 必须与文件内出现顺序一致 (load_task.py 第 24 行按位置索引)。
+# =============================================================================
+
+# 镜像: craft_1_cherry_bomb_with_materials —— 直接给成品, 0 动作通过
+mirror_craft_1_cherry_bomb_with_materials:
+  id: 0
+  object: Cherry Bomb
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['add_item_by_name("Cherry Bomb")']
+  evaluator: craft
+  difficulty: easy
+
+# 镜像: craft_1_cherry_bomb_in_mine_with_coal —— 保留 warp_mine 以同时验证传送链路
+mirror_craft_1_cherry_bomb_in_mine_with_coal:
+  id: 1
+  object: Cherry Bomb
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['warp_mine(2)', 'add_item_by_name("Cherry Bomb")']
+  evaluator: craft
+  difficulty: medium
+
+# 镜像: craft_1_cherry_bomb (完整目标任务) —— 保留 set_time, 直接给成品
+mirror_craft_1_cherry_bomb:
+  id: 2
+  object: Cherry Bomb
+  quantity: 1
+  tool: null
+  save: save_new
+  init_commands: ['set_time(time=900)', 'add_item_by_name("Cherry Bomb")']
+  evaluator: craft
+  difficulty: medium

@@ -1,4 +1,7 @@
 {
   "key_var": "GEMINI_KEY",
-  "comp_model": "gemini-2.5-pro-preview-03-25"
+  "comp_model": "gemini/gemini-2.5-flash",
+  "emb_model": "BAAI/bge-base-en-v1.5",
+  "emb_fallback_dim": 768,
+  "base_url": "http://9.135.226.243:4000/v1"
 }

@@ -20,7 +20,7 @@ dotenv.load_dotenv(os.path.join(base_dir, ".env"))
 crafting_recipes_path = os.path.join(base_dir, 'game_data/CraftingRecipes.json')
 with open(crafting_recipes_path, "r", encoding="utf-8") as recipe_file:
     _crafting_recipes = json.load(recipe_file)
-mmap_size = 4 * 1024 * 1024  # 4MB
+mmap_size = 8 * 1024 * 1024  # 8MB
 
 
 def _ts_print(message: str) -> None:
@@ -499,6 +499,27 @@ class ActionProxy:
         ret_str = self._post_message(message)
         return ret_str
 
+    def navigate(self, name: str) -> bool:
+        """Navigate to a location reachable from the current map via warp point.
+        Uses the game's built-in A* pathfinding to walk the character there."""
+        message = f"navigate%{name}"
+        # Navigate may take a while as the character walks across the map
+        result = self._post_message(message, timeout=60)
+        if result is None:
+            return False
+        return str(result).strip().lower() == "true"
+
+    def descend_mine(self) -> bool:
+        """Descend one floor inside the mine by walking onto the nearest visible
+        ladder/shaft tile (ladders are not warp points, so navigate cannot reach
+        them). Returns True only if the mine floor actually changed."""
+        message = "descend_mine"
+        # Pathing to the ladder + descending can take a few seconds.
+        result = self._post_message(message, timeout=60)
+        if result is None:
+            return False
+        return str(result).strip().lower() == "true"
+
     def unattach_item(self) -> None:
         message = "unattach"
         self._post_message(message)
@@ -639,6 +660,36 @@ class ActionProxy:
         dy = abs(after_pos[1] - before_pos[1])
         return (dx + dy) >= min_delta
 
+    def _socket_only_observe(self, timeout: int = 10) -> Any:
+        """Lightweight readiness check via socket — uses 'is_paused' (tiny response)
+        to confirm the game loop is running, then does a full observe."""
+        try:
+            # Quick check: if game responds to is_paused, it's ready
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(timeout)
+            client_socket.connect(('127.0.0.1', self.port))
+            client_socket.sendall(b'is_paused')
+            chunks = []
+            while True:
+                data = client_socket.recv(4096)
+                if not data:
+                    break
+                chunks.append(data)
+                if b'<EOF>' in data:
+                    break
+            client_socket.close()
+            raw = b"".join(chunks)
+            if raw.endswith(b"<EOF>"):
+                raw = raw[:-5]
+            response = raw.decode('utf-8').strip().lower()
+            # If game responds "true" or "false" to is_paused, it's in-world
+            if response in ("true", "false"):
+                # Return a fake valid obs dict to pass _is_valid_obs_response
+                return {"Player": {"Location": "ready"}, "GameState": {}}
+            return None
+        except Exception:
+            return None
+
     def wait_game_start(self) -> bool:
         # Phase 1: quick probe without long blocking waits
         for _ in range(8):
@@ -648,6 +699,11 @@ class ActionProxy:
                 return True
             if self._has_day_started_signal(probe):
                 _ts_print("game already started (day-start callback confirmed)")
+                return True
+            # Fallback: try socket-only observe (bypasses mmap)
+            socket_probe = self._socket_only_observe(timeout=8)
+            if self._is_valid_obs_response(socket_probe):
+                _ts_print("game already started (socket fallback confirmed)")
                 return True
             time.sleep(1)
 
@@ -664,6 +720,12 @@ class ActionProxy:
                 return True
             if self._has_day_started_signal(probe):
                 print(f"game started (day-start callback confirmed, attempt {attempt})")
+                return True
+
+            # Fallback: try socket-only observe every attempt
+            socket_probe = self._socket_only_observe(timeout=10)
+            if self._is_valid_obs_response(socket_probe):
+                print(f"game started (socket fallback confirmed, attempt {attempt})")
                 return True
 
             # Every few rounds, ask server-side wait signal, but do not rely on it exclusively.

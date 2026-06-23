@@ -1,8 +1,9 @@
 {
-  "key_var": "OA_OPENAI_KEY",
+  "key_var": "VENUS_QWEN_TOKEN",
+  "api_key": "KXCU4dqqUQ9CHj4By8nGRyuK@5464",
   "emb_model": "BAAI/bge-base-en-v1.5",
-  "comp_model": "qwen2.5-vl-72b-instruct",
+  "comp_model": "qwen3.5-397b-a17b",
   "is_azure": false,
-  "base_url": "",
+  "base_url": "http://v2.open.venus.oa.com/llmproxy",
   "emb_fallback_dim": 768
 }

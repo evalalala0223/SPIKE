@@ -1,0 +1,1870 @@
+{
+  "run_id": "20260616_201739",
+  "epoch_index": 0,
+  "task_index": 1,
+  "task_name": "craft_1_cherry_bomb",
+  "runner_task_name": "crafting_lite",
+  "task_id": 0,
+  "task_description": "craft_1_cherry_bomb",
+  "difficulty": "medium",
+  "agent_run_dir_name": "10783_crafting_lite_0_1781612291.0732098",
+  "planner_comp_model": "gemini/gemini-3.1-pro-preview",
+  "embedding_model": "BAAI/bge-base-en-v1.5",
+  "prompt_profile": "crafting",
+  "resolved_action_planning_template": "./res/stardew/prompts/templates/action_planning_cortex.prompt",
+  "resolved_task_inference_template": "./res/stardew/prompts/templates/task_inference_cortex.prompt",
+  "scheduler_status": {
+    "little_brain_steps": 2,
+    "cycle_size": 4,
+    "max_consecutive_failures": 2,
+    "stall_zero_progress_threshold": 4,
+    "stall_repeat_threshold": 5,
+    "stall_repeat_zero_progress_threshold": 2
+  },
+  "dual_brain_status": {
+    "vllm_available": true,
+    "scheduler": {
+      "little_brain_steps": 2,
+      "cycle_size": 4,
+      "max_consecutive_failures": 2,
+      "stall_zero_progress_threshold": 4,
+      "stall_repeat_threshold": 5,
+      "stall_repeat_zero_progress_threshold": 2
+    },
+    "little_brain": {
+      "suggestions_count": 4,
+      "execution_log_count": 2,
+      "context_summary_len": 150,
+      "current_task": "The current subtask is collect the missing copper ore, coal needed to craft cherry bomb.",
+      "max_relative_move": 20
+    },
+    "failure_detector": {
+      "consecutive_failures": 1,
+      "consecutive_compound_failures": 1,
+      "big_brain_replan_count": 0
+    }
+  },
+  "start_time": "2026-06-16T20:18:11.073210",
+  "end_time": "2026-06-16T20:51:14.335282",
+  "duration_sec": 1983.262,
+  "exit_step": 50,
+  "experiment_budget_mode": "benchmark_steps",
+  "step_budget": 50,
+  "llm_call_budget": null,
+  "llm_call_count": 141,
+  "llm_call_breakdown": {
+    "big_brain:llm_description_async": 29,
+    "big_brain:task_inference": 20,
+    "big_brain:action_planning": 29,
+    "little_brain": 52,
+    "big_brain:self_reflection": 11
+  },
+  "budget_exit_reason": "max_steps",
+  "runtime_exit_reason": null,
+  "planning_attempt_count": 51,
+  "blocked_replan_count": 0,
+  "no_execution_return_count": 1,
+  "executed_step_count": 50,
+  "completed": false,
+  "final_quantity": 0,
+  "end_reason": "max_steps",
+  "error": null,
+  "end_screenshot": "end_00049.jpeg",
+  "video_path": null,
+  "video_frames_written": null,
+  "video_error": null,
+  "video_warning": null,
+  "evaluation_diagnostics": [],
+  "baseline_known": null,
+  "baseline_reset_confirmed": null,
+  "benchmark_status": "valid",
+  "perf_summary": {
+    "steps_with_perf": 50,
+    "sum": {
+      "planning_sec": 1578.738,
+      "execute_sec": 167.468,
+      "observe_sec": 4.485,
+      "task_eval_sec": 0.002,
+      "reset_sec": 10149.2,
+      "set_agent_sec": 465.7,
+      "freeze_before_plan_sec": 0.047,
+      "freeze_resume_for_exec_sec": 2.542,
+      "freeze_after_exec_sec": 2.931
+    },
+    "avg": {
+      "planning_sec": 31.575,
+      "execute_sec": 3.349,
+      "observe_sec": 0.09,
+      "task_eval_sec": 0.0,
+      "reset_sec": 202.984,
+      "set_agent_sec": 9.314,
+      "freeze_before_plan_sec": 0.001,
+      "freeze_resume_for_exec_sec": 0.051,
+      "freeze_after_exec_sec": 0.059
+    },
+    "max": {
+      "planning_sec": 72.765,
+      "execute_sec": 13.349,
+      "observe_sec": 0.167,
+      "task_eval_sec": 0.001,
+      "reset_sec": 202.984,
+      "set_agent_sec": 9.314,
+      "freeze_before_plan_sec": 0.047,
+      "freeze_resume_for_exec_sec": 0.083,
+      "freeze_after_exec_sec": 0.1
+    }
+  },
+  "steps": [
+    {
+      "step_index": 0,
+      "timestamp": "2026-06-16T20:22:44.378013",
+      "duration_sec": 61.0,
+      "action": "move(x=-3, y=1)",
+      "records": {
+        "executed_skills": [
+          "move(x=-3, y=1)"
+        ],
+        "last_skill": "move(x=-3, y=1)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00000.jpeg",
+      "perf": {
+        "planning_sec": 54.038,
+        "execute_sec": 6.714,
+        "observe_sec": 0.078,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.047,
+        "freeze_resume_for_exec_sec": 0.039,
+        "freeze_after_exec_sec": 0.074
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 1,
+      "timestamp": "2026-06-16T20:22:51.427110",
+      "duration_sec": 7.022,
+      "action": "move(x=1, y=2)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=2)"
+        ],
+        "last_skill": "move(x=1, y=2)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 3.055,
+        "execute_sec": 3.778,
+        "observe_sec": 0.077,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.048,
+        "freeze_after_exec_sec": 0.054
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 2,
+      "timestamp": "2026-06-16T20:23:38.734669",
+      "duration_sec": 47.23,
+      "action": "move(x=3, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=3, y=0)"
+        ],
+        "last_skill": "move(x=3, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 43.193,
+        "execute_sec": 3.788,
+        "observe_sec": 0.09,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.059,
+        "freeze_after_exec_sec": 0.088
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 3,
+      "timestamp": "2026-06-16T20:23:47.152361",
+      "duration_sec": 8.395,
+      "action": "move(x=2, y=-2)",
+      "records": {
+        "executed_skills": [
+          "move(x=2, y=-2)"
+        ],
+        "last_skill": "move(x=2, y=-2)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00003.jpeg",
+      "perf": {
+        "planning_sec": 4.186,
+        "execute_sec": 3.959,
+        "observe_sec": 0.103,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.077,
+        "freeze_after_exec_sec": 0.063
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 4,
+      "timestamp": "2026-06-16T20:24:31.630119",
+      "duration_sec": 44.46,
+      "action": "move(x=3, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=3, y=0)"
+        ],
+        "last_skill": "move(x=3, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 40.383,
+        "execute_sec": 3.85,
+        "observe_sec": 0.072,
+        "task_eval_sec": 0.001,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.046,
+        "freeze_after_exec_sec": 0.1
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 5,
+      "timestamp": "2026-06-16T20:24:41.821505",
+      "duration_sec": 10.173,
+      "action": "move(x=3, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=3, y=0)"
+        ],
+        "last_skill": "move(x=3, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 6.213,
+        "execute_sec": 3.784,
+        "observe_sec": 0.073,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.027,
+        "freeze_after_exec_sec": 0.067
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 6,
+      "timestamp": "2026-06-16T20:25:27.825773",
+      "duration_sec": 45.983,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00006.jpeg",
+      "perf": {
+        "planning_sec": 42.403,
+        "execute_sec": 3.374,
+        "observe_sec": 0.092,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.055,
+        "freeze_after_exec_sec": 0.049
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 7,
+      "timestamp": "2026-06-16T20:25:35.263059",
+      "duration_sec": 7.42,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 3.878,
+        "execute_sec": 3.35,
+        "observe_sec": 0.081,
+        "task_eval_sec": 0.001,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.045,
+        "freeze_after_exec_sec": 0.056
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 8,
+      "timestamp": "2026-06-16T20:26:19.922623",
+      "duration_sec": 44.641,
+      "action": "move(x=3, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=3, y=0)"
+        ],
+        "last_skill": "move(x=3, y=0)",
+        "errors": false,
+        "errors_info": "move(x=3, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 44.363,
+        "execute_sec": 0.081,
+        "observe_sec": 0.094,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.044,
+        "freeze_after_exec_sec": 0.051
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 9,
+      "timestamp": "2026-06-16T20:26:26.304481",
+      "duration_sec": 6.361,
+      "action": "move(x=3, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=3, y=0)"
+        ],
+        "last_skill": "move(x=3, y=0)",
+        "errors": false,
+        "errors_info": "move(x=3, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00009.jpeg",
+      "perf": {
+        "planning_sec": 6.002,
+        "execute_sec": 0.108,
+        "observe_sec": 0.126,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.03,
+        "freeze_after_exec_sec": 0.086
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 10,
+      "timestamp": "2026-06-16T20:27:30.410286",
+      "duration_sec": 64.088,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 60.521,
+        "execute_sec": 3.327,
+        "observe_sec": 0.087,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.062,
+        "freeze_after_exec_sec": 0.084
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 11,
+      "timestamp": "2026-06-16T20:27:36.483110",
+      "duration_sec": 6.054,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": "move(x=1, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 2.705,
+        "execute_sec": 3.114,
+        "observe_sec": 0.07,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.083,
+        "freeze_after_exec_sec": 0.074
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 12,
+      "timestamp": "2026-06-16T20:28:45.033895",
+      "duration_sec": 68.529,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00012.jpeg",
+      "perf": {
+        "planning_sec": 64.975,
+        "execute_sec": 3.325,
+        "observe_sec": 0.102,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.07,
+        "freeze_after_exec_sec": 0.048
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 13,
+      "timestamp": "2026-06-16T20:28:53.417913",
+      "duration_sec": 8.364,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 4.78,
+        "execute_sec": 3.369,
+        "observe_sec": 0.09,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.055,
+        "freeze_after_exec_sec": 0.064
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 14,
+      "timestamp": "2026-06-16T20:29:47.041433",
+      "duration_sec": 53.605,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 48.089,
+        "execute_sec": 5.318,
+        "observe_sec": 0.085,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.029,
+        "freeze_after_exec_sec": 0.074
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 15,
+      "timestamp": "2026-06-16T20:29:57.086455",
+      "duration_sec": 10.024,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00015.jpeg",
+      "perf": {
+        "planning_sec": 4.504,
+        "execute_sec": 5.3,
+        "observe_sec": 0.088,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.075,
+        "freeze_after_exec_sec": 0.048
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 16,
+      "timestamp": "2026-06-16T20:30:34.003029",
+      "duration_sec": 36.898,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 31.325,
+        "execute_sec": 5.329,
+        "observe_sec": 0.096,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.052,
+        "freeze_after_exec_sec": 0.087
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 17,
+      "timestamp": "2026-06-16T20:30:42.373678",
+      "duration_sec": 8.352,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": "move(x=1, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 4.781,
+        "execute_sec": 3.37,
+        "observe_sec": 0.073,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.079,
+        "freeze_after_exec_sec": 0.04
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 18,
+      "timestamp": "2026-06-16T20:31:46.439834",
+      "duration_sec": 64.046,
+      "action": "move(x=1, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=1, y=0)"
+        ],
+        "last_skill": "move(x=1, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00018.jpeg",
+      "perf": {
+        "planning_sec": 60.471,
+        "execute_sec": 3.331,
+        "observe_sec": 0.097,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.052,
+        "freeze_after_exec_sec": 0.085
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 19,
+      "timestamp": "2026-06-16T20:32:50.584679",
+      "duration_sec": 52.837,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 47.339,
+        "execute_sec": 5.309,
+        "observe_sec": 0.071,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.063,
+        "freeze_after_exec_sec": 0.047
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 20,
+      "timestamp": "2026-06-16T20:32:54.031441",
+      "duration_sec": 3.428,
+      "action": "move(x=0, y=-10)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=-10)"
+        ],
+        "last_skill": "move(x=0, y=-10)",
+        "errors": false,
+        "errors_info": "move(x=0, y=-10) toward up FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 3.103,
+        "execute_sec": 0.163,
+        "observe_sec": 0.069,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.03,
+        "freeze_after_exec_sec": 0.053
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 21,
+      "timestamp": "2026-06-16T20:33:54.144741",
+      "duration_sec": 60.093,
+      "action": "choose_item(slot_index=3)",
+      "records": {
+        "executed_skills": [
+          "choose_item(slot_index=3)"
+        ],
+        "last_skill": "choose_item(slot_index=3)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00021.jpeg",
+      "perf": {
+        "planning_sec": 56.855,
+        "execute_sec": 3.043,
+        "observe_sec": 0.07,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.061,
+        "freeze_after_exec_sec": 0.056
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 22,
+      "timestamp": "2026-06-16T20:34:06.429751",
+      "duration_sec": 12.268,
+      "action": "move(x=15, y=7)",
+      "records": {
+        "executed_skills": [
+          "move(x=15, y=7)"
+        ],
+        "last_skill": "move(x=15, y=7)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 4.224,
+        "execute_sec": 7.871,
+        "observe_sec": 0.085,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.046,
+        "freeze_after_exec_sec": 0.035
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 23,
+      "timestamp": "2026-06-16T20:35:07.649649",
+      "duration_sec": 61.201,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 55.722,
+        "execute_sec": 5.298,
+        "observe_sec": 0.087,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.027,
+        "freeze_after_exec_sec": 0.056
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 24,
+      "timestamp": "2026-06-16T20:35:17.334540",
+      "duration_sec": 9.663,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00024.jpeg",
+      "perf": {
+        "planning_sec": 4.126,
+        "execute_sec": 5.319,
+        "observe_sec": 0.087,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.075,
+        "freeze_after_exec_sec": 0.047
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 25,
+      "timestamp": "2026-06-16T20:35:46.936665",
+      "duration_sec": 29.581,
+      "action": "move(x=15, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=15, y=0)"
+        ],
+        "last_skill": "move(x=15, y=0)",
+        "errors": false,
+        "errors_info": "move(x=15, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 29.244,
+        "execute_sec": 0.145,
+        "observe_sec": 0.073,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.056,
+        "freeze_after_exec_sec": 0.055
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 26,
+      "timestamp": "2026-06-16T20:35:51.482154",
+      "duration_sec": 4.525,
+      "action": "move(x=15, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=15, y=0)"
+        ],
+        "last_skill": "move(x=15, y=0)",
+        "errors": false,
+        "errors_info": "move(x=15, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 4.167,
+        "execute_sec": 0.147,
+        "observe_sec": 0.085,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.064,
+        "freeze_after_exec_sec": 0.052
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 27,
+      "timestamp": "2026-06-16T20:36:39.422910",
+      "duration_sec": 47.922,
+      "action": "move(x=12, y=5)",
+      "records": {
+        "executed_skills": [
+          "move(x=12, y=5)"
+        ],
+        "last_skill": "move(x=12, y=5)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00027.jpeg",
+      "perf": {
+        "planning_sec": 40.896,
+        "execute_sec": 6.815,
+        "observe_sec": 0.093,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.041,
+        "freeze_after_exec_sec": 0.068
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 28,
+      "timestamp": "2026-06-16T20:36:53.735685",
+      "duration_sec": 14.295,
+      "action": "move(x=12, y=5)",
+      "records": {
+        "executed_skills": [
+          "move(x=12, y=5)"
+        ],
+        "last_skill": "move(x=12, y=5)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 7.243,
+        "execute_sec": 6.877,
+        "observe_sec": 0.077,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.039,
+        "freeze_after_exec_sec": 0.048
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 29,
+      "timestamp": "2026-06-16T20:37:57.285221",
+      "duration_sec": 63.531,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": "move(x=10, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 63.217,
+        "execute_sec": 0.123,
+        "observe_sec": 0.09,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.027,
+        "freeze_after_exec_sec": 0.067
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 30,
+      "timestamp": "2026-06-16T20:38:12.399407",
+      "duration_sec": 15.095,
+      "action": "move(x=10, y=5)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=5)"
+        ],
+        "last_skill": "move(x=10, y=5)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00030.jpeg",
+      "perf": {
+        "planning_sec": 7.346,
+        "execute_sec": 7.579,
+        "observe_sec": 0.075,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.033,
+        "freeze_after_exec_sec": 0.05
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 31,
+      "timestamp": "2026-06-16T20:39:00.187112",
+      "duration_sec": 47.768,
+      "action": "move(x=12, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=12, y=0)"
+        ],
+        "last_skill": "move(x=12, y=0)",
+        "errors": false,
+        "errors_info": "move(x=12, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 47.404,
+        "execute_sec": 0.173,
+        "observe_sec": 0.088,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.076,
+        "freeze_after_exec_sec": 0.019
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 32,
+      "timestamp": "2026-06-16T20:39:03.582327",
+      "duration_sec": 3.374,
+      "action": "move(x=12, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=12, y=0)"
+        ],
+        "last_skill": "move(x=12, y=0)",
+        "errors": false,
+        "errors_info": "move(x=12, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 3.091,
+        "execute_sec": 0.131,
+        "observe_sec": 0.081,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.039,
+        "freeze_after_exec_sec": 0.022
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 33,
+      "timestamp": "2026-06-16T20:39:36.740591",
+      "duration_sec": 33.136,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": "move(x=10, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00033.jpeg",
+      "perf": {
+        "planning_sec": 32.753,
+        "execute_sec": 0.16,
+        "observe_sec": 0.099,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.049,
+        "freeze_after_exec_sec": 0.066
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 34,
+      "timestamp": "2026-06-16T20:39:45.702699",
+      "duration_sec": 8.945,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=1) # axis-breaker"
+        ],
+        "last_skill": "move(x=0, y=1)",
+        "errors": false,
+        "errors_info": "AXIS-CIRCUIT-BREAKER: 3 consecutive blocked move() calls toward +x. The path is blocked in this direction. Injecting recovery move `move(x=0, y=1)`. Next plan MUST try a different direction.",
+        "refusal_type": "axis_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 5.423,
+        "execute_sec": 3.327,
+        "observe_sec": 0.074,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.065,
+        "freeze_after_exec_sec": 0.038
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 35,
+      "timestamp": "2026-06-16T20:40:41.235820",
+      "duration_sec": 55.513,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": "move(x=10, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 55.188,
+        "execute_sec": 0.142,
+        "observe_sec": 0.096,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.027,
+        "freeze_after_exec_sec": 0.051
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 36,
+      "timestamp": "2026-06-16T20:40:46.771497",
+      "duration_sec": 5.515,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": "move(x=10, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00036.jpeg",
+      "perf": {
+        "planning_sec": 5.212,
+        "execute_sec": 0.138,
+        "observe_sec": 0.073,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.031,
+        "freeze_after_exec_sec": 0.05
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 37,
+      "timestamp": "2026-06-16T20:41:25.764791",
+      "duration_sec": 38.976,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=10, y=0)"
+        ],
+        "last_skill": "move(x=10, y=0)",
+        "errors": false,
+        "errors_info": "move(x=10, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 38.603,
+        "execute_sec": 0.161,
+        "observe_sec": 0.091,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.044,
+        "freeze_after_exec_sec": 0.066
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 38,
+      "timestamp": "2026-06-16T20:41:36.817054",
+      "duration_sec": 11.034,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=-1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=-1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 7.611,
+        "execute_sec": 3.228,
+        "observe_sec": 0.088,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.025,
+        "freeze_after_exec_sec": 0.064
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 39,
+      "timestamp": "2026-06-16T20:42:42.876182",
+      "duration_sec": 66.039,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00039.jpeg",
+      "perf": {
+        "planning_sec": 62.55,
+        "execute_sec": 3.242,
+        "observe_sec": 0.102,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.051,
+        "freeze_after_exec_sec": 0.075
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 40,
+      "timestamp": "2026-06-16T20:43:49.019947",
+      "duration_sec": 66.126,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=-1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=-1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 62.616,
+        "execute_sec": 3.268,
+        "observe_sec": 0.091,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.068,
+        "freeze_after_exec_sec": 0.064
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 41,
+      "timestamp": "2026-06-16T20:44:45.258026",
+      "duration_sec": 56.222,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 52.772,
+        "execute_sec": 3.235,
+        "observe_sec": 0.095,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.053,
+        "freeze_after_exec_sec": 0.05
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 42,
+      "timestamp": "2026-06-16T20:45:35.348899",
+      "duration_sec": 50.071,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=-1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=-1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00042.jpeg",
+      "perf": {
+        "planning_sec": 46.586,
+        "execute_sec": 3.252,
+        "observe_sec": 0.092,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.056,
+        "freeze_after_exec_sec": 0.067
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 43,
+      "timestamp": "2026-06-16T20:46:32.595488",
+      "duration_sec": 57.229,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 53.661,
+        "execute_sec": 3.252,
+        "observe_sec": 0.167,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.058,
+        "freeze_after_exec_sec": 0.073
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 44,
+      "timestamp": "2026-06-16T20:47:48.862973",
+      "duration_sec": 76.246,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=-1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=-1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 72.765,
+        "execute_sec": 3.255,
+        "observe_sec": 0.106,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.057,
+        "freeze_after_exec_sec": 0.044
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 45,
+      "timestamp": "2026-06-16T20:48:57.345759",
+      "duration_sec": 68.457,
+      "action": "move(x=10, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=1) # circuit-breaker-recovery"
+        ],
+        "last_skill": "move(x=0, y=1)",
+        "errors": true,
+        "errors_info": "CIRCUIT-BREAKER: action `move(x=10, y=0)` previously produced explicit failure 3 times in a row. This action is REFUSED for this step. The next plan MUST choose a DIFFERENT action.",
+        "refusal_type": "same_action_circuit_breaker",
+        "refused_action": "move(x=10, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00045.jpeg",
+      "perf": {
+        "planning_sec": 65.039,
+        "execute_sec": 3.225,
+        "observe_sec": 0.085,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.039,
+        "freeze_after_exec_sec": 0.049
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 46,
+      "timestamp": "2026-06-16T20:50:12.199923",
+      "duration_sec": 74.832,
+      "action": "move(x=12, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=-1) # axis-breaker"
+        ],
+        "last_skill": "move(x=0, y=-1)",
+        "errors": false,
+        "errors_info": "AXIS-CIRCUIT-BREAKER: 3 consecutive blocked move() calls toward +x. The path is blocked in this direction. Injecting recovery move `move(x=0, y=-1)`. Next plan MUST try a different direction.",
+        "refusal_type": "axis_circuit_breaker",
+        "refused_action": "move(x=12, y=0)",
+        "refusal_count": 3
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 71.356,
+        "execute_sec": 3.244,
+        "observe_sec": 0.093,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.064,
+        "freeze_after_exec_sec": 0.058
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 47,
+      "timestamp": "2026-06-16T20:50:30.471998",
+      "duration_sec": 18.253,
+      "action": "move(x=12, y=4)",
+      "records": {
+        "executed_skills": [
+          "move(x=12, y=4)"
+        ],
+        "last_skill": "move(x=12, y=4)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": null,
+      "perf": {
+        "planning_sec": 4.683,
+        "execute_sec": 13.349,
+        "observe_sec": 0.075,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.06,
+        "freeze_after_exec_sec": 0.075
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 48,
+      "timestamp": "2026-06-16T20:51:05.396341",
+      "duration_sec": 34.906,
+      "action": "move(x=12, y=0)",
+      "records": {
+        "executed_skills": [
+          "move(x=12, y=0)"
+        ],
+        "last_skill": "move(x=12, y=0)",
+        "errors": false,
+        "errors_info": "move(x=12, y=0) toward right FAILED - player position did not change, path is likely blocked by an obstacle"
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": false,
+      "screenshot": "step_00048.jpeg",
+      "perf": {
+        "planning_sec": 34.529,
+        "execute_sec": 0.161,
+        "observe_sec": 0.156,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.034,
+        "freeze_after_exec_sec": 0.016
+      },
+      "env_id": 0,
+      "port": 10783
+    },
+    {
+      "step_index": 49,
+      "timestamp": "2026-06-16T20:51:14.335281",
+      "duration_sec": 7.037,
+      "action": "move(x=0, y=1)",
+      "records": {
+        "executed_skills": [
+          "move(x=0, y=1)"
+        ],
+        "last_skill": "move(x=0, y=1)",
+        "errors": false,
+        "errors_info": ""
+      },
+      "task_eval": {
+        "completed": false,
+        "quantity": 0
+      },
+      "terminated": false,
+      "truncated": true,
+      "screenshot": "step_00049.jpeg",
+      "perf": {
+        "planning_sec": 3.549,
+        "execute_sec": 3.267,
+        "observe_sec": 0.097,
+        "task_eval_sec": 0.0,
+        "reset_sec": 202.984,
+        "set_agent_sec": 9.314,
+        "freeze_before_plan_sec": 0.0,
+        "freeze_resume_for_exec_sec": 0.057,
+        "freeze_after_exec_sec": 0.058
+      },
+      "env_id": 0,
+      "port": 10783
+    }
+  ],
+  "evaluation_error": null,
+  "run_status": "max_steps",
+  "runtime_diagnostics": {
+    "planning_attempt_count": 51,
+    "blocked_replan_count": 0,
+    "no_execution_return_count": 1,
+    "executed_step_count": 50,
+    "watchdog_triggered": false,
+    "watchdog_reason": "",
+    "last_planning_sec": 3.4468462467193604,
+    "planning_sec_median": 53.09988296031952,
+    "last_no_execution_planning_sec": null,
+    "no_execution_planning_sec_median": null,
+    "no_execution_planning_sample_count": 0,
+    "watchdog_dynamic_timeout_sec": null,
+    "same_step_elapsed_sec": 0.0,
+    "last_no_execution": false,
+    "last_warning": ""
+  },
+  "is_valid_benchmark": true,
+  "invalid_reason": null
+}

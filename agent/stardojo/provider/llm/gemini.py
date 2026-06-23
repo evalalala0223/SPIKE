@@ -55,6 +55,238 @@ PROVIDER_SETTING_KEY_VAR = "key_var"
 PROVIDER_SETTING_COMP_MODEL = "comp_model"
 
 
+def _legacy_messages_to_genai(messages: List[Dict[str, Any]]) -> Tuple[Optional[str], List[types.Content]]:
+    """Convert legacy dict-style messages to google-genai>=1.x Content/Part objects.
+
+    Legacy shape (produced by assemble_prompt_tripartite):
+        [
+          {"role": "system", "parts": [{"text": "..."}]},
+          {"role": "user",   "parts": [
+              {"text": "..."},
+              {"inline_data": {"mime_type": "image/jpeg", "data": "<base64>"}},
+              ...
+          ]},
+          ...
+        ]
+
+    Returns:
+        (system_instruction, contents)
+        system_instruction: extracted "system" text or None
+        contents: list[types.Content] suitable for client.models.generate_content(contents=...)
+    """
+    system_instruction: Optional[str] = None
+    contents: List[types.Content] = []
+
+    for message in messages or []:
+        if not isinstance(message, dict):
+            continue
+        role = str(message.get("role") or "user").lower()
+        raw_parts = message.get("parts") or []
+        if not isinstance(raw_parts, list):
+            raw_parts = [raw_parts]
+
+        if role == "system":
+            chunks: List[str] = []
+            for p in raw_parts:
+                if isinstance(p, dict):
+                    text = p.get("text")
+                    if isinstance(text, str) and text:
+                        chunks.append(text)
+                elif isinstance(p, str) and p:
+                    chunks.append(p)
+            if chunks:
+                merged = "\n\n".join(chunks)
+                system_instruction = (
+                    merged if system_instruction is None else f"{system_instruction}\n\n{merged}"
+                )
+            continue
+
+        # Gemini accepts roles "user" and "model" only.
+        gen_role = "model" if role in ("model", "assistant") else "user"
+
+        new_parts: List[types.Part] = []
+        for p in raw_parts:
+            if isinstance(p, types.Part):
+                new_parts.append(p)
+                continue
+            if isinstance(p, str):
+                if p:
+                    new_parts.append(types.Part.from_text(text=p))
+                continue
+            if not isinstance(p, dict):
+                continue
+
+            if "text" in p and p["text"] is not None:
+                text_val = str(p["text"])
+                if text_val:
+                    new_parts.append(types.Part.from_text(text=text_val))
+                continue
+
+            inline = p.get("inline_data") or p.get("inlineData")
+            if isinstance(inline, dict):
+                mime = str(inline.get("mime_type") or inline.get("mimeType") or "image/jpeg")
+                data = inline.get("data")
+                if isinstance(data, str):
+                    # Strip data URI prefix if present, e.g. "data:image/jpeg;base64,/9j/..."
+                    payload = data
+                    if payload.startswith("data:"):
+                        comma = payload.find(",")
+                        if comma >= 0:
+                            header = payload[5:comma]  # "image/jpeg;base64"
+                            if ";" in header:
+                                hdr_mime = header.split(";", 1)[0].strip()
+                                if hdr_mime:
+                                    mime = hdr_mime
+                            payload = payload[comma + 1:]
+                    try:
+                        raw_bytes = base64.b64decode(payload, validate=False)
+                    except Exception:
+                        raw_bytes = payload.encode("utf-8", errors="ignore")
+                elif isinstance(data, (bytes, bytearray)):
+                    raw_bytes = bytes(data)
+                else:
+                    continue
+                if not raw_bytes:
+                    continue
+                new_parts.append(types.Part.from_bytes(data=raw_bytes, mime_type=mime))
+                continue
+
+            file_data = p.get("file_data") or p.get("fileData")
+            if isinstance(file_data, dict):
+                file_uri = file_data.get("file_uri") or file_data.get("fileUri")
+                mime = str(file_data.get("mime_type") or file_data.get("mimeType") or "")
+                if file_uri:
+                    try:
+                        new_parts.append(types.Part.from_uri(file_uri=file_uri, mime_type=mime or None))
+                    except Exception:
+                        pass
+
+        if new_parts:
+            contents.append(types.Content(role=gen_role, parts=new_parts))
+
+    return system_instruction, contents
+
+
+def _build_generate_config(
+    *,
+    model: str,
+    max_tokens: int,
+    temperature: float,
+    seed: Optional[int],
+    system_instruction: Optional[str],
+) -> "types.GenerateContentConfig":
+    """Build a GenerateContentConfig that works for both classic and "thinking" Gemini models.
+
+    For Gemini "thinking" models (e.g. 3.x pro / flash-thinking), part of the
+    `max_output_tokens` budget is consumed by hidden thoughts. If the budget is
+    too tight, the response can finish with `MAX_TOKENS` and `parts=None` (no
+    visible answer emitted). We adapt by:
+
+      * For 3.x models that *require* thinking (e.g. gemini-3.1-pro-preview):
+        do NOT pass thinking_config (passing budget=0 yields HTTP 400). Instead
+        ensure `max_output_tokens` is large enough to leave room for both
+        thoughts and the visible answer (configurable via env vars below).
+      * For thinking-capable but optional models: try to disable thinking with
+        `thinking_budget=0` to maximize tokens spent on the answer.
+
+    Env overrides:
+      GEMINI_THINKING_BUDGET   int  thinking budget for optional-thinking models (default 0)
+      GEMINI_MIN_MAX_TOKENS    int  floor for max_output_tokens on thinking models (default 4096)
+    """
+    model_lc = (model or "").lower()
+    is_thinking_3x = (
+        "gemini-3" in model_lc or "3.1" in model_lc or "3.5" in model_lc
+    )
+    is_optional_thinking = ("thinking" in model_lc) and not is_thinking_3x
+
+    # All modern Gemini chat models benefit from a generous output budget when
+    # the agent prompt asks for reasoning + a code block. The default upstream
+    # value (1024) often truncates the answer mid-block, leaving the parser
+    # with no actions to execute. Apply a floor that's safe for Stardew prompts.
+    effective_max_tokens = int(max_tokens or 0)
+    try:
+        floor = int(os.getenv("GEMINI_MIN_MAX_TOKENS", "0"))
+    except ValueError:
+        floor = 0
+    if floor <= 0:
+        # Auto-pick a floor based on whether the model needs to spend tokens on thinking.
+        floor = 8192 if is_thinking_3x else 4096
+    if effective_max_tokens < floor:
+        effective_max_tokens = floor
+
+    kwargs: Dict[str, Any] = dict(
+        max_output_tokens=effective_max_tokens,
+        temperature=temperature,
+        seed=seed,
+    )
+    if system_instruction:
+        kwargs["system_instruction"] = system_instruction
+
+    if is_optional_thinking:
+        try:
+            budget = int(os.getenv("GEMINI_THINKING_BUDGET", "0"))
+        except ValueError:
+            budget = 0
+        try:
+            kwargs["thinking_config"] = types.ThinkingConfig(
+                thinking_budget=budget,
+                include_thoughts=False,
+            )
+        except Exception:
+            pass
+
+    return types.GenerateContentConfig(**kwargs)
+
+
+def _extract_response_text(response: Any, model: str) -> str:
+    """Robustly extract text from a google-genai response.
+
+    Handles cases where:
+      - candidates is None / empty
+      - content / parts is None (e.g. finish_reason=MAX_TOKENS with thinking)
+      - response.text shortcut is preferred when available
+    """
+    if response is None:
+        return ""
+
+    # Prefer the SDK's own joined-text accessor when present.
+    text_shortcut = getattr(response, "text", None)
+    if isinstance(text_shortcut, str) and text_shortcut:
+        return text_shortcut
+
+    candidates = getattr(response, "candidates", None) or []
+    pieces: List[str] = []
+    finish_reasons: List[str] = []
+    for cand in candidates:
+        finish = getattr(cand, "finish_reason", None)
+        if finish is not None:
+            finish_reasons.append(str(finish))
+        content = getattr(cand, "content", None)
+        parts = getattr(content, "parts", None) if content is not None else None
+        if not parts:
+            continue
+        for part in parts:
+            t = getattr(part, "text", None)
+            if isinstance(t, str) and t:
+                pieces.append(t)
+
+    if pieces:
+        return "".join(pieces)
+
+    usage = getattr(response, "usage_metadata", None)
+    thoughts_tokens = getattr(usage, "thoughts_token_count", None)
+    cand_tokens = getattr(usage, "candidates_token_count", None)
+    logger.error(
+        f"[Gemini] empty visible response from {model}: "
+        f"finish_reasons={finish_reasons or 'unknown'}, "
+        f"thoughts_tokens={thoughts_tokens}, candidates_tokens={cand_tokens}. "
+        "If finish_reason=MAX_TOKENS, increase max_tokens or set "
+        "GEMINI_THINKING_BUDGET=0 to disable thinking."
+    )
+    return ""
+
+
+
 class GeminiProvider(LLMProvider):
     """A class that wraps a given model"""
 
@@ -164,38 +396,35 @@ class GeminiProvider(LLMProvider):
             max_tokens: int = 512,
         ) -> Tuple[str, Dict[str, int]]:
 
-            system_content = ""
-            messages_for_request = []
-            for message in messages:
-                if message.get("role") == "system":
-                    parts = message.get("parts", [])
-                    if isinstance(parts, list) and len(parts) > 0 and isinstance(parts[0], dict):
-                        system_content = parts[0].get("text", "") or ""
-                else:
-                    messages_for_request.append(message)
+            system_instruction, contents_for_request = _legacy_messages_to_genai(messages)
 
-            logger.write(f"Requesting completion..., System content: {system_content}")
+            logger.write(
+                f"Requesting completion..., System content: {system_instruction or ''}"
+            )
 
             """Send a request to the Gemini API."""
             increment_llm_call_counter("big_brain:gemini")
             response = self.client.models.generate_content(
                 model=model,
-                contents=messages_for_request,
-                config=types.GenerateContentConfig(
-                    max_output_tokens=max_tokens,
+                contents=contents_for_request,
+                config=_build_generate_config(
+                    model=model,
+                    max_tokens=max_tokens,
                     temperature=temperature,
                     seed=seed,
-                )
+                    system_instruction=system_instruction,
+                ),
             )
             if response is None:
                 logger.error("Failed to get a response from Gemini. Try again.")
                 logger.double_check()
 
-            message = response.candidates[0].content.parts[0].text
+            message = _extract_response_text(response, model)
 
+            usage = getattr(response, "usage_metadata", None)
             info = {
-                "input_tokens": response.usage_metadata.prompt_token_count,  # Gemini 的输入 Token
-                "output_tokens": response.usage_metadata.candidates_token_count  # Gemini 的输出 Token
+                "input_tokens": getattr(usage, "prompt_token_count", 0) or 0,
+                "output_tokens": getattr(usage, "candidates_token_count", 0) or 0,
             }
 
             logger.write(f'Response received from {model}.')
@@ -246,26 +475,20 @@ class GeminiProvider(LLMProvider):
                 max_tokens: int = 512,
         ) -> Tuple[str, Dict[str, int]]:
 
-            system_content = ""
-            messages_for_request = []
-            for message in messages:
-                if message.get("role") == "system":
-                    parts = message.get("parts", [])
-                    if isinstance(parts, list) and len(parts) > 0 and isinstance(parts[0], dict):
-                        system_content = parts[0].get("text", "") or ""
-                else:
-                    messages_for_request.append(message)
+            system_instruction, contents_for_request = _legacy_messages_to_genai(messages)
 
             """Send a request to the Gemini API."""
             increment_llm_call_counter("big_brain:gemini_async")
             response = await asyncio.to_thread(
                 self.client.models.generate_content,
                 model=model,
-                contents=messages_for_request,
-                config=types.GenerateContentConfig(
-                    max_output_tokens=max_tokens,
+                contents=contents_for_request,
+                config=_build_generate_config(
+                    model=model,
+                    max_tokens=max_tokens,
                     temperature=temperature,
                     seed=seed,
+                    system_instruction=system_instruction,
                 ),
             )
 
@@ -273,11 +496,12 @@ class GeminiProvider(LLMProvider):
                 logger.error("Failed to get a response from Gemini. Try again.")
                 logger.double_check()
 
-            message = response.candidates[0].content.parts[0].text
+            message = _extract_response_text(response, model)
 
+            usage = getattr(response, "usage_metadata", None)
             info = {
-                "input_tokens": response.usage_metadata.prompt_token_count,
-                "output_tokens": response.usage_metadata.candidates_token_count,
+                "input_tokens": getattr(usage, "prompt_token_count", 0) or 0,
+                "output_tokens": getattr(usage, "candidates_token_count", 0) or 0,
             }
 
             logger.write(f'Response received from {model}.')

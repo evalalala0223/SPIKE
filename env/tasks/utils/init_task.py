@@ -286,6 +286,15 @@ class InitTaskProxy:
         count = self._get_day_started_count(response)
         return isinstance(count, int) and count > 0
 
+    def _is_game_in_world(self) -> bool:
+        """Lightweight readiness check: if the game responds to is_paused with a
+        bool, the game loop is running and we are in-world."""
+        try:
+            resp = self._post_message("is_paused", timeout=8)
+            return self._normalize_bool_response(resp) is not None
+        except Exception:
+            return False
+
     def wait_game_start(self) -> bool:
         deadline = time.time() + 180
         attempt = 0
@@ -293,9 +302,14 @@ class InitTaskProxy:
             attempt += 1
             wait_result = self._post_message("wait_game_start", timeout=20)
             if self._normalize_bool_response(wait_result) is True:
-                probe = self._post_message("observe_v2%1", timeout=10)
+                probe = self._post_message("observe_v2%1", timeout=30)
                 if self._is_game_start_ready_probe(probe):
                     return True
+            # Fallback: if OnDayStarted callback didn't fire (e.g. resumed save),
+            # accept readiness when the game loop responds to is_paused.
+            if self._is_game_in_world():
+                _ts_print(f"game ready via is_paused fallback (attempt {attempt})")
+                return True
             _ts_print(f"waiting game readiness... attempt {attempt}")
             time.sleep(2)
 
